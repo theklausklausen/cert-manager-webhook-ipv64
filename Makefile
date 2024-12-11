@@ -11,6 +11,10 @@ KUBEBUILDER_VERSION=1.28.0
 
 HELM_FILES := $(shell find deploy/example-webhook)
 
+.PHONY: help
+help: ## Display this help.
+	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m\n"} /^[a-zA-Z_0-9-]+:.*?##/ { printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
+
 test: _test/kubebuilder-$(KUBEBUILDER_VERSION)-$(OS)-$(ARCH)/etcd _test/kubebuilder-$(KUBEBUILDER_VERSION)-$(OS)-$(ARCH)/kube-apiserver _test/kubebuilder-$(KUBEBUILDER_VERSION)-$(OS)-$(ARCH)/kubectl
 	TEST_ASSET_ETCD=_test/kubebuilder-$(KUBEBUILDER_VERSION)-$(OS)-$(ARCH)/etcd \
 	TEST_ASSET_KUBE_APISERVER=_test/kubebuilder-$(KUBEBUILDER_VERSION)-$(OS)-$(ARCH)/kube-apiserver \
@@ -43,3 +47,10 @@ $(OUT)/rendered-manifest.yaml: $(HELM_FILES) | $(OUT)
 
 _test $(OUT) _test/kubebuilder-$(KUBEBUILDER_VERSION)-$(OS)-$(ARCH):
 	mkdir -p $@
+
+run:
+	go run main.go
+
+link-tc:
+	rm -rf /home/$(USER)/.config/Code/User/globalStorage/rangav.vscode-thunder-client
+	ln -s ${PWD}/.vscode/rangav.vscode-thunder-client /home/$(USER)/.config/Code/User/globalStorage/

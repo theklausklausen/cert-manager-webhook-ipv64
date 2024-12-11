@@ -1,0 +1,97 @@
+---
+include:
+  - project: 'klausklausen/templates'
+    ref: main
+    file: 'tests.yml'
+  - project: 'klausklausen/templates'
+    ref: main
+    file: 'deploy.yml'
+  - project: 'klausklausen/templates'
+    ref: main
+    file: 'build.yml'
+  - project: 'klausklausen/templates'
+    ref: main
+    file: 'package.yml'
+
+variables:
+  TAG: $CI_COMMIT_BRANCH
+  GO_IMAGE: golang:1.23
+
+stages:
+  - test
+  - security
+  - build
+  - package
+  - deploy
+
+# lint helm:
+#   extends: .lint_helm_chart
+
+yaml lint:
+  extends: .lint_yaml
+
+go-lint:
+  stage: test
+  image: golangci/golangci-lint:v1.62.2
+  script:
+    - golangci-lint run -v
+  allow_failure: true
+
+
+prettier:
+  extends: .lint_prettier
+
+# go-test:
+#   stage: test
+#   image: $GO_IMAGE
+#   script:
+#     - go test -v ./...
+
+security:
+  stage: security
+  image: aquasec/trivy:latest
+  script:
+    - trivy fs --exit-code 1 --severity HIGH,CRITICAL .
+  allow_failure: true
+
+build test image:
+  extends: .build_test
+  variables:
+    IMAGE_NAME: ${NEXUS_REPO_HOST}/${CI_PROJECT_NAME}
+    IMAGE_TAG: ${CI_COMMIT_SHORT_SHA}
+    BUILD_TARGET: prod
+    # BEFORE_SCRIPT: |
+    #   export GOPATH=$CI_PROJECT_DIR/go
+    #   export PATH=$GOPATH/bin:$PATH
+    #   mkdir -p $GOPATH/src/$CI_PROJECT_NAME
+    #   ln -s $CI_PROJECT_DIR $GOPATH/src/$CI_PROJECT_NAME
+    #   cd $GOPATH/src/$CI_PROJECT_NAME
+build image:
+  extends: .image_multi_arch
+  variables:
+    IMAGE_NAME: ${NEXUS_REPO_HOST}/${CI_PROJECT_NAME}
+    IMAGE_TAG: ${CI_COMMIT_SHORT_SHA}
+    BUILD_TARGET: prod
+    # BEFORE_SCRIPT: |
+    #   export GOPATH=$CI_PROJECT_DIR/go
+    #   export PATH=$GOPATH/bin:$PATH
+    #   mkdir -p $GOPATH/src/$CI_PROJECT_NAME
+    #   ln -s $CI_PROJECT_DIR $GOPATH/src/$CI_PROJECT_NAME
+    #   cd $GOPATH/src/$CI_PROJECT_NAME
+package image:
+  extends: .image_tag
+  variables:
+    IMAGE_NAME: ${NEXUS_REPO_HOST}/${CI_PROJECT_NAME}
+  tags:
+    - amd64
+
+package helm:
+  extends: .package_helm_chart
+  variables:
+    HELM_CHART_DIR: deploy
+    PACKAGE_NAME: cert-manager-webhook-ipv64
+deploy helm:
+  extends: .deploy_helm_chart
+  variables:
+    HELM_CHART_DIR: deploy
+    PACKAGE_NAME: cert-manager-webhook-ipv64
