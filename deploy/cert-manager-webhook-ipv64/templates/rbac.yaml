@@ -94,8 +94,6 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: {{ include "cert-manager-webhook-ipv64.fullname" . }}
-  labels:
-{{ include "cert-manager-webhook-ipv64.labels" . | indent 4 }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -110,8 +108,6 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: {{ include "cert-manager-webhook-ipv64.fullname" . }}
-  labels:
-{{ include "cert-manager-webhook-ipv64.labels" . | indent 4 }}
 rules:
   - apiGroups:
       - ''
@@ -135,8 +131,6 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: {{ include "cert-manager-webhook-ipv64.fullname" . }}:flowcontrol-solver
-  labels:
-{{ include "cert-manager-webhook-ipv64.labels" . | indent 4 }}
 rules:
   - apiGroups:
       - "flowcontrol.apiserver.k8s.io"
@@ -151,8 +145,6 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: {{ include "cert-manager-webhook-ipv64.fullname" . }}:flowcontrol-solver
-  labels:
-{{ include "cert-manager-webhook-ipv64.labels" . | indent 4 }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
