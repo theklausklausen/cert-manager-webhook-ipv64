@@ -4,11 +4,11 @@
 apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
-  name: {{ include "cert-manager-webhook-ipv64.selfSignedIssuer" . }}
+  name: {{ include "cert-manager-webhook.selfSignedIssuer" . }}
   namespace: {{ .Release.Namespace | quote }}
   labels:
-    app: {{ include "cert-manager-webhook-ipv64.name" . }}
-    chart: {{ include "cert-manager-webhook-ipv64.chart" . }}
+    app: {{ include "cert-manager-webhook.name" . }}
+    chart: {{ include "cert-manager-webhook.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
@@ -20,19 +20,19 @@ spec:
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: {{ include "cert-manager-webhook-ipv64.rootCACertificate" . }}
+  name: {{ include "cert-manager-webhook.rootCACertificate" . }}
   namespace: {{ .Release.Namespace | quote }}
   labels:
-    app: {{ include "cert-manager-webhook-ipv64.name" . }}
-    chart: {{ include "cert-manager-webhook-ipv64.chart" . }}
+    app: {{ include "cert-manager-webhook.name" . }}
+    chart: {{ include "cert-manager-webhook.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
-  secretName: {{ include "cert-manager-webhook-ipv64.rootCACertificate" . }}
+  secretName: {{ include "cert-manager-webhook.rootCACertificate" . }}
   duration: 43800h # 5y
   issuerRef:
-    name: {{ include "cert-manager-webhook-ipv64.selfSignedIssuer" . }}
-  commonName: "ca.cert-manager-webhook-ipv64.cert-manager"
+    name: {{ include "cert-manager-webhook.selfSignedIssuer" . }}
+  commonName: "ca.cert-manager-webhook.cert-manager"
   isCA: true
 
 ---
@@ -41,16 +41,16 @@ spec:
 apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
-  name: {{ include "cert-manager-webhook-ipv64.rootCAIssuer" . }}
+  name: {{ include "cert-manager-webhook.rootCAIssuer" . }}
   namespace: {{ .Release.Namespace | quote }}
   labels:
-    app: {{ include "cert-manager-webhook-ipv64.name" . }}
-    chart: {{ include "cert-manager-webhook-ipv64.chart" . }}
+    app: {{ include "cert-manager-webhook.name" . }}
+    chart: {{ include "cert-manager-webhook.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
   ca:
-    secretName: {{ include "cert-manager-webhook-ipv64.rootCACertificate" . }}
+    secretName: {{ include "cert-manager-webhook.rootCACertificate" . }}
 
 ---
 
@@ -58,19 +58,19 @@ spec:
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: {{ include "cert-manager-webhook-ipv64.servingCertificate" . }}
+  name: {{ include "cert-manager-webhook.servingCertificate" . }}
   namespace: {{ .Release.Namespace | quote }}
   labels:
-    app: {{ include "cert-manager-webhook-ipv64.name" . }}
-    chart: {{ include "cert-manager-webhook-ipv64.chart" . }}
+    app: {{ include "cert-manager-webhook.name" . }}
+    chart: {{ include "cert-manager-webhook.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
-  secretName: {{ include "cert-manager-webhook-ipv64.servingCertificate" . }}
+  secretName: {{ include "cert-manager-webhook.servingCertificate" . }}
   duration: 8760h # 1y
   issuerRef:
-    name: {{ include "cert-manager-webhook-ipv64.rootCAIssuer" . }}
+    name: {{ include "cert-manager-webhook.rootCAIssuer" . }}
   dnsNames:
-  - {{ include "cert-manager-webhook-ipv64.fullname" . }}
-  - {{ include "cert-manager-webhook-ipv64.fullname" . }}.{{ .Release.Namespace }}
-  - {{ include "cert-manager-webhook-ipv64.fullname" . }}.{{ .Release.Namespace }}.svc
+  - {{ include "cert-manager-webhook.fullname" . }}
+  - {{ include "cert-manager-webhook.fullname" . }}.{{ .Release.Namespace }}
+  - {{ include "cert-manager-webhook.fullname" . }}.{{ .Release.Namespace }}.svc
