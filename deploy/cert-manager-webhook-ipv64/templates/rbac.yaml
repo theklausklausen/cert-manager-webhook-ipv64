@@ -155,5 +155,5 @@ roleRef:
 subjects:
   - apiGroup: ""
     kind: ServiceAccount
-    name: {{ .Release.Namespace }}
+    name: {{ include "cert-manager-webhook-ipv64.fullname" . }}
     namespace: {{ .Release.Namespace }}
