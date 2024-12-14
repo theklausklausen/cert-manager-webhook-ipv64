@@ -158,7 +158,7 @@ subjects:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  name: {{ include "cert-manager-webhook-ipv64.fullname" . }}:{{ include "cert-manager-webhook-ipv64.fullname" . }}
+  name: {{ include "cert-manager-webhook-ipv64.fullname" . }}:object
   namespace: {{ .Release.Namespace | quote }}
   labels:
     app: {{ include "cert-manager-webhook-ipv64.name" . }}
@@ -182,7 +182,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: {{ include "cert-manager-webhook-ipv64.fullname" . }}:{{ include "cert-manager-webhook-ipv64.fullname" . }}
+  name: {{ include "cert-manager-webhook-ipv64.fullname" . }}:object
   namespace: {{ .Release.Namespace | quote }}
   labels:
     app: {{ include "cert-manager-webhook-ipv64.name" . }}
@@ -192,7 +192,7 @@ metadata:
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: {{ include "cert-manager-webhook-ipv64.fullname" . }}:{{ include "cert-manager-webhook-ipv64.fullname" . }}
+  name: {{ include "cert-manager-webhook-ipv64.fullname" . }}:object
 subjects:
   - apiGroup: ""
     kind: ServiceAccount
