@@ -154,3 +154,47 @@ subjects:
     kind: ServiceAccount
     name: {{ include "cert-manager-webhook-ipv64.fullname" . }}
     namespace: {{ .Release.Namespace }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ include "cert-manager-webhook-ipv64.fullname" . }}:{{ include "cert-manager-webhook-ipv64.fullname" . }}
+  namespace: {{ .Release.Namespace | quote }}
+  labels:
+    app: {{ include "cert-manager-webhook-ipv64.name" . }}
+    chart: {{ include "cert-manager-webhook-ipv64.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+rules:
+  - apiGroups:
+      - {{ .Values.groupName }}
+    resources:
+      - {{ include "cert-manager-webhook-ipv64.fullname" . }}
+    verbs: 
+      - "create"
+      - "update"
+      - "patch"
+      - "delete"
+      - "get"
+      - "list"
+      - "watch"
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "cert-manager-webhook-ipv64.fullname" . }}:{{ include "cert-manager-webhook-ipv64.fullname" . }}
+  namespace: {{ .Release.Namespace | quote }}
+  labels:
+    app: {{ include "cert-manager-webhook-ipv64.name" . }}
+    chart: {{ include "cert-manager-webhook-ipv64.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: {{ include "cert-manager-webhook-ipv64.fullname" . }}:{{ include "cert-manager-webhook-ipv64.fullname" . }}
+subjects:
+  - apiGroup: ""
+    kind: ServiceAccount
+    name: {{ .Release.Namespace }}
+    namespace: {{ .Release.Namespace }}
