@@ -181,7 +181,7 @@ metadata:
   namespace: {{ .Release.Namespace | quote }}
 roleRef:
   ClusterRole: rbac.authorization.k8s.io
-  kind: Role
+  kind: ClusterRole
   name: {{ include "cert-manager-webhook-ipv64.fullname" . }}:object
 subjects:
   - apiGroup: ""
