@@ -51,6 +51,8 @@ func (e *ipv64DNSProviderSolver) Name() string {
 func (c *ipv64DNSProviderSolver) Present(ch *v1alpha1.ChallengeRequest) error {
 	klog.V(6).Infof("call function Present: namespace=%s, zone=%s, fqdn=%s",
 		ch.ResourceNamespace, ch.ResolvedZone, ch.ResolvedFQDN)
+	fmt.Println("call function Present: namespace=%s, zone=%s, fqdn=%s",
+		ch.ResourceNamespace, ch.ResolvedZone, ch.ResolvedFQDN)
 
 	config, err := loadConfig(ch.Config)
 	if err != nil {

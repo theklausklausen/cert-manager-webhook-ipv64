@@ -54,12 +54,12 @@ security:
     - trivy fs --exit-code 1 --severity HIGH,CRITICAL .
   allow_failure: true
 
-build test image:
-  extends: .build_test
-  variables:
-    IMAGE_NAME: ${NEXUS_REPO_HOST}/${CI_PROJECT_NAME}
-    IMAGE_TAG: ${CI_COMMIT_SHORT_SHA}
-    BUILD_TARGET: prod
+# build test image:
+#   extends: .build_test
+#   variables:
+#     IMAGE_NAME: ${NEXUS_REPO_HOST}/${CI_PROJECT_NAME}
+#     IMAGE_TAG: ${CI_COMMIT_SHORT_SHA}
+#     BUILD_TARGET: prod
 build image:
   extends: .image_multi_arch
   variables:
