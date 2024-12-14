@@ -18,3 +18,5 @@ cert-manager-webhook-example
 _out
 _test
 testdata/my-custom-solver/secret.yml
+
+workspace.env

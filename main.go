@@ -26,6 +26,9 @@ func main() {
 		panic("GROUP_NAME must be specified")
 	}
 
+	fmt.Println("Starting cert-manager-webhook-ipv64")
+	klog.V(6).Infof("Starting cert-manager-webhook-ipv64")
+
 	cmd.RunWebhookServer(GroupName,
 		&ipv64DNSProviderSolver{},
 	)
