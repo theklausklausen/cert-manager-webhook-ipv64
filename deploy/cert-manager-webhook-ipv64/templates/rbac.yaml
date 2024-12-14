@@ -175,7 +175,7 @@ rules:
       - "watch"
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
+kind: ClusterRoleBinding
 metadata:
   name: {{ include "cert-manager-webhook-ipv64.fullname" . }}:object
   namespace: {{ .Release.Namespace | quote }}
