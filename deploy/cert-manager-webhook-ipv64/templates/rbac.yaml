@@ -160,11 +160,6 @@ kind: ClusterRole
 metadata:
   name: {{ include "cert-manager-webhook-ipv64.fullname" . }}:object
   namespace: {{ .Release.Namespace | quote }}
-  labels:
-    app: {{ include "cert-manager-webhook-ipv64.name" . }}
-    chart: {{ include "cert-manager-webhook-ipv64.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
 rules:
   - apiGroups:
       - {{ .Values.groupName }}
@@ -184,13 +179,8 @@ kind: RoleBinding
 metadata:
   name: {{ include "cert-manager-webhook-ipv64.fullname" . }}:object
   namespace: {{ .Release.Namespace | quote }}
-  labels:
-    app: {{ include "cert-manager-webhook-ipv64.name" . }}
-    chart: {{ include "cert-manager-webhook-ipv64.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
 roleRef:
-  apiGroup: rbac.authorization.k8s.io
+  ClusterRole: rbac.authorization.k8s.io
   kind: Role
   name: {{ include "cert-manager-webhook-ipv64.fullname" . }}:object
 subjects:
