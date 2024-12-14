@@ -124,3 +124,36 @@ subjects:
     kind: ServiceAccount
     name: {{ .Release.Namespace }}
     namespace: {{ .Release.Namespace }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ include "cert-manager-webhook-ipv64.fullname" . }}:object
+  namespace: {{ .Release.Namespace | quote }}
+rules:
+  - apiGroups:
+      - v1
+    resources:
+      - secrets
+    verbs:
+      - get
+      - list
+      - watch
+      - create
+      - update
+      - delete
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "cert-manager-webhook-ipv64.fullname" . }}:object
+  namespace: {{ .Release.Namespace | quote }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ include "cert-manager-webhook-ipv64.fullname" . }}:object
+subjects:
+  - apiGroup: ""
+    kind: ServiceAccount
+    name: {{ .Release.Namespace }}
+    namespace: {{ .Release.Namespace }}
