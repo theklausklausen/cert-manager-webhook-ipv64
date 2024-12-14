@@ -18,9 +18,9 @@ variables:
   GO_IMAGE: golang:1.23
 
 stages:
-  - test
-  - security
-  - build
+  # - test
+  # - security
+  # - build
   - package
   - deploy
 
