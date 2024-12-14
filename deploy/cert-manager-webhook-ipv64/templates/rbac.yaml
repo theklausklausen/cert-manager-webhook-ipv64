@@ -156,7 +156,7 @@ subjects:
     namespace: {{ .Release.Namespace }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: Role
+kind: ClusterRole
 metadata:
   name: {{ include "cert-manager-webhook-ipv64.fullname" . }}:object
   namespace: {{ .Release.Namespace | quote }}
