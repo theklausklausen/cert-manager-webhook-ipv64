@@ -7,7 +7,6 @@ import (
 	"os"
 
 	extapi "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	"k8s.io/client-go/rest"
 	"k8s.io/klog"
 
 	"github.com/cert-manager/cert-manager/pkg/acme/webhook/apis/acme/v1alpha1"
@@ -116,17 +115,17 @@ func (c *ipv64DNSProviderSolver) CleanUp(ch *v1alpha1.ChallengeRequest) error {
 	return nil
 }
 
-func (c *ipv64DNSProviderSolver) Initialize(kubeClientConfig *rest.Config, stopCh <-chan struct{}) error {
-	k8sClient, err := kubernetes.NewForConfig(kubeClientConfig)
-	klog.Info("Input variable stopCh is %d length", len(stopCh))
-	if err != nil {
-		return err
-	}
+// func (c *ipv64DNSProviderSolver) Initialize(kubeClientConfig *rest.Config, stopCh <-chan struct{}) error {
+// 	k8sClient, err := kubernetes.NewForConfig(kubeClientConfig)
+// 	klog.Info("Input variable stopCh is %d length", len(stopCh))
+// 	if err != nil {
+// 		return err
+// 	}
 
-	c.client = k8sClient
+// 	c.client = k8sClient
 
-	return nil
-}
+// 	return nil
+// }
 
 func loadConfig(cfgJSON *extapi.JSON) (ipv64DNSProviderConfig, error) {
 	cfg := ipv64DNSProviderConfig{}
