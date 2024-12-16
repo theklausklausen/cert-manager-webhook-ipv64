@@ -26,7 +26,7 @@ type Client struct {
 }
 
 func NewClient(token string) *Client {
-	klog.V(1).Info("create new ipv64 client")
+	klog.Info("create new ipv64 client")
 	if client == (Client{}) {
 		client = Client{
 			ApiUrl: ApiUrl,
@@ -38,7 +38,7 @@ func NewClient(token string) *Client {
 
 func (c *Client) AddDNSRecord(subdomain string, praefix string, content string, recordType string) error {
 
-	klog.V(1).Info("call function AddDNSRecord: subdomain=%s, praefix=%s, content=%s, recordType=%s")
+	klog.Info("call function AddDNSRecord: subdomain=%s, praefix=%s, content=%s, recordType=%s")
 
 	if recordType != "TXT" && recordType != "A" && recordType != "CNAME" && recordType != "MX" && recordType != "NS" && recordType != "PTR" && recordType != "SRV" && recordType != "SOA" && recordType != "AAAA" {
 		return fmt.Errorf("unsupported record recordType: %s", recordType)
@@ -68,7 +68,7 @@ func (c *Client) AddDNSRecord(subdomain string, praefix string, content string, 
 		return fmt.Errorf("unexpected status code: %d", resp.StatusCode)
 	}
 
-	klog.V(1).Info("Added record %s.%s", praefix, subdomain)
+	klog.Info("Added record %s.%s", praefix, subdomain)
 
 	return nil
 }
@@ -133,7 +133,7 @@ func (c *Client) AddDNSRecord(subdomain string, praefix string, content string, 
 
 func (c *Client) DeleteDNSRecord(subdomain string, praefix string, content string, recordType string) error {
 
-	klog.V(1).Info("call function DeleteDNSRecord: subdomain=%s, praefix=%s, content=%s, recordType=%s")
+	klog.Info("call function DeleteDNSRecord: subdomain=%s, praefix=%s, content=%s, recordType=%s")
 
 	if recordType != "TXT" && recordType != "A" && recordType != "CNAME" && recordType != "MX" && recordType != "NS" && recordType != "PTR" && recordType != "SRV" && recordType != "SOA" && recordType != "AAAA" {
 		return fmt.Errorf("unsupported record type: %s", recordType)
@@ -163,7 +163,7 @@ func (c *Client) DeleteDNSRecord(subdomain string, praefix string, content strin
 		return fmt.Errorf("unexpected status code: %d", resp.StatusCode)
 	}
 
-	klog.V(1).Info("Deleted record %s.%s", praefix, subdomain)
+	klog.Info("Deleted record %s.%s", praefix, subdomain)
 
 	return nil
 }

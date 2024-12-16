@@ -27,7 +27,7 @@ func main() {
 	}
 
 	fmt.Println("Starting cert-manager-webhook-ipv64")
-	klog.V(1).Info("Starting cert-manager-webhook-ipv64")
+	klog.Info("Starting cert-manager-webhook-ipv64")
 
 	cmd.RunWebhookServer(GroupName,
 		&ipv64DNSProviderSolver{},
@@ -49,7 +49,7 @@ func (e *ipv64DNSProviderSolver) Name() string {
 }
 
 func (c *ipv64DNSProviderSolver) Present(ch *v1alpha1.ChallengeRequest) error {
-	klog.V(1).Info("call function Present: namespace=%s, zone=%s, fqdn=%s",
+	klog.Info("call function Present: namespace=%s, zone=%s, fqdn=%s",
 		ch.ResourceNamespace, ch.ResolvedZone, ch.ResolvedFQDN)
 	fmt.Println("call function Present: namespace=%s, zone=%s, fqdn=%s",
 		ch.ResourceNamespace, ch.ResolvedZone, ch.ResolvedFQDN)
@@ -84,7 +84,7 @@ func (c *ipv64DNSProviderSolver) Present(ch *v1alpha1.ChallengeRequest) error {
 }
 
 func (c *ipv64DNSProviderSolver) CleanUp(ch *v1alpha1.ChallengeRequest) error {
-	klog.V(1).Info("call function Cleanup: namespace=%s, zone=%s, fqdn=%s",
+	klog.Info("call function Cleanup: namespace=%s, zone=%s, fqdn=%s",
 		ch.ResourceNamespace, ch.ResolvedZone, ch.ResolvedFQDN)
 
 	config, err := loadConfig(ch.Config)
@@ -118,7 +118,7 @@ func (c *ipv64DNSProviderSolver) CleanUp(ch *v1alpha1.ChallengeRequest) error {
 
 func (c *ipv64DNSProviderSolver) Initialize(kubeClientConfig *rest.Config, stopCh <-chan struct{}) error {
 	k8sClient, err := kubernetes.NewForConfig(kubeClientConfig)
-	klog.V(1).Info("Input variable stopCh is %d length", len(stopCh))
+	klog.Info("Input variable stopCh is %d length", len(stopCh))
 	if err != nil {
 		return err
 	}
@@ -153,7 +153,7 @@ func getTokenFromSecret(secretName string, client *kubernetes.Clientset, ch *v1a
 }
 
 func getClient(cfg ipv64DNSProviderConfig, client *kubernetes.Clientset, ch *v1alpha1.ChallengeRequest) (*ipv64.Client, error) {
-	klog.V(1).Info("Creating new ipv64 client")
+	klog.Info("Creating new ipv64 client")
 	token, err := getTokenFromSecret(cfg.SecretName, client, ch)
 	if err != nil {
 		return nil, err
