@@ -147,8 +147,10 @@ func getTokenFromSecret(secretName string, client *kubernetes.Clientset, ch *v1a
 	klog.Info("Getting token from secret")
 	sec, err := client.CoreV1().Secrets(ch.ResourceNamespace).Get(context.TODO(), secretName, metav1.GetOptions{})
 	if err != nil {
+		klog.Error("Error getting secret: ", err)
 		return "", err
 	}
+	klog.Info("Got secret")
 	token, err := stringFromSecretData(sec.Data, "api-key")
 	if err != nil {
 		return "", fmt.Errorf("error decoding api-key: %v", err)
