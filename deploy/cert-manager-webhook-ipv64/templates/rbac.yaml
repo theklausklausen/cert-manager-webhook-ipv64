@@ -139,11 +139,6 @@ rules:
       - get
       - list
       - watch
-      - create
-      - update
-      - delete
-    resourceNames:
-      - {{ include "cert-manager-webhook-ipv64.fullname" . }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
@@ -155,7 +150,6 @@ roleRef:
   kind: Role
   name: {{ include "cert-manager-webhook-ipv64.fullname" . }}:secret
 subjects:
-  - apiGroup: ""
-    kind: ServiceAccount
+  - kind: ServiceAccount
     name: {{ include "cert-manager-webhook-ipv64.fullname" . }}
     namespace: {{ .Release.Namespace }}
