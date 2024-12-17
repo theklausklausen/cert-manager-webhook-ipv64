@@ -1,4 +1,12 @@
 ---
+.only_on_code_change: &only_on_code_change
+  only:
+    changes:
+      - '**/*.go'
+      - '**/*.mod'
+      - '**/*.sum'
+      - '**/Dockefile'
+
 include:
   - project: 'klausklausen/templates'
     ref: main
@@ -66,12 +74,14 @@ build image:
     IMAGE_NAME: ${NEXUS_REPO_HOST}/${CI_PROJECT_NAME}
     IMAGE_TAG: ${CI_COMMIT_SHORT_SHA}
     BUILD_TARGET: prod
+  <<: *only_on_code_change
 package image:
   extends: .image_tag
   variables:
     IMAGE_NAME: ${NEXUS_REPO_HOST}/${CI_PROJECT_NAME}
   tags:
     - amd64
+  <<: *only_on_code_change
 
 package helm:
   extends: .package_helm_chart
