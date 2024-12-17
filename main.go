@@ -12,6 +12,7 @@ import (
 	"github.com/cert-manager/cert-manager/pkg/acme/webhook/apis/acme/v1alpha1"
 	"github.com/cert-manager/cert-manager/pkg/acme/webhook/cmd"
 	"k8s.io/client-go/kubernetes"
+	"k8s.io/client-go/rest"
 
 	ipv64 "cert-manager-webhook-ipv64/internal/ipv64"
 
