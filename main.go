@@ -45,7 +45,7 @@ type ipv64DNSProviderConfig struct {
 
 func (e *ipv64DNSProviderSolver) Name() string {
 	klog.Info("call function Name")
-	return "ipv64"
+	return "cert-manager-webhook-ipv64"
 }
 
 func (c *ipv64DNSProviderSolver) Present(ch *v1alpha1.ChallengeRequest) error {
