@@ -43,7 +43,7 @@ type ipv64DNSProviderConfig struct {
 	Subdomain  string `json:"subdomain"`
 }
 
-func (e *ipv64DNSProviderSolver) Name() string {
+func (c *ipv64DNSProviderSolver) Name() string {
 	klog.Info("call function Name")
 	return "cert-manager-webhook-ipv64"
 }
@@ -118,6 +118,9 @@ func (c *ipv64DNSProviderSolver) Initialize(kubeClientConfig *rest.Config, stopC
 	klog.Info("call function Initialize")
 	klog.Info("Input variable kubeClientConfig is %v", kubeClientConfig)
 	klog.Info("Input variable stopCh is %d length", len(stopCh))
+	// print group name and solver name
+	klog.Info("Group name is %s", GroupName)
+	klog.Info("Solver name is %s", c.Name())
 
 	k8sClient, err := kubernetes.NewForConfig(kubeClientConfig)
 	if err != nil {
