@@ -26,7 +26,6 @@ func main() {
 		panic("GROUP_NAME must be specified")
 	}
 
-	fmt.Println("Starting cert-manager-webhook-ipv64")
 	klog.Info("Starting cert-manager-webhook-ipv64")
 
 	cmd.RunWebhookServer(GroupName,
@@ -51,8 +50,6 @@ func (e *ipv64DNSProviderSolver) Name() string {
 
 func (c *ipv64DNSProviderSolver) Present(ch *v1alpha1.ChallengeRequest) error {
 	klog.Info("call function Present: namespace=%s, zone=%s, fqdn=%s",
-		ch.ResourceNamespace, ch.ResolvedZone, ch.ResolvedFQDN)
-	fmt.Println("call function Present: namespace=%s, zone=%s, fqdn=%s",
 		ch.ResourceNamespace, ch.ResolvedZone, ch.ResolvedFQDN)
 
 	config, err := loadConfig(ch.Config)

@@ -10,7 +10,7 @@ groupName: cert-manager-webhook-ipv64  # has to match the value in the Issuer's 
 
 certManager:
   namespace: cert-manager
-  serviceAccountName: cert-manager
+  serviceAccountName: cert-manager-webhook-ipv64
 
 image:
   repository: repo.kk.int/cert-manager-webhook-ipv64
