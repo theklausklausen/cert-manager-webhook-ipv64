@@ -45,6 +45,7 @@ type ipv64DNSProviderConfig struct {
 }
 
 func (e *ipv64DNSProviderSolver) Name() string {
+	klog.Info("call function Name")
 	return "ipv64"
 }
 
@@ -129,6 +130,7 @@ func (c *ipv64DNSProviderSolver) Initialize(kubeClientConfig *rest.Config, stopC
 }
 
 func loadConfig(cfgJSON *extapi.JSON) (ipv64DNSProviderConfig, error) {
+	klog.Info("Loading config")
 	cfg := ipv64DNSProviderConfig{}
 	if cfgJSON == nil {
 		return cfg, nil
@@ -141,6 +143,7 @@ func loadConfig(cfgJSON *extapi.JSON) (ipv64DNSProviderConfig, error) {
 }
 
 func getTokenFromSecret(secretName string, client *kubernetes.Clientset, ch *v1alpha1.ChallengeRequest) (string, error) {
+	klog.Info("Getting token from secret")
 	sec, err := client.CoreV1().Secrets(ch.ResourceNamespace).Get(context.TODO(), secretName, metav1.GetOptions{})
 	if err != nil {
 		return "", err
@@ -162,6 +165,7 @@ func getClient(cfg ipv64DNSProviderConfig, client *kubernetes.Clientset, ch *v1a
 }
 
 func stringFromSecretData(secretData map[string][]byte, key string) (string, error) {
+	klog.Info("Getting string from secret data")
 	data, ok := secretData[key]
 	if !ok {
 		return "", fmt.Errorf("key %q not found in secret data", key)
