@@ -126,7 +126,7 @@ subjects:
     namespace: {{ .Release.Namespace }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
+kind: Role
 metadata:
   name: {{ include "cert-manager-webhook-ipv64.fullname" . }}:secret
   namespace: {{ .Release.Namespace | quote }}
@@ -144,13 +144,13 @@ rules:
       - delete
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
+kind: RoleBinding
 metadata:
   name: {{ include "cert-manager-webhook-ipv64.fullname" . }}:secret
   namespace: {{ .Release.Namespace | quote }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
+  kind: Role
   name: {{ include "cert-manager-webhook-ipv64.fullname" . }}:secret
 subjects:
   - apiGroup: ""
