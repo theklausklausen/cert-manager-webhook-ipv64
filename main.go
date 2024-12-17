@@ -115,17 +115,17 @@ func (c *ipv64DNSProviderSolver) CleanUp(ch *v1alpha1.ChallengeRequest) error {
 	return nil
 }
 
-// func (c *ipv64DNSProviderSolver) Initialize(kubeClientConfig *rest.Config, stopCh <-chan struct{}) error {
-// 	k8sClient, err := kubernetes.NewForConfig(kubeClientConfig)
-// 	klog.Info("Input variable stopCh is %d length", len(stopCh))
-// 	if err != nil {
-// 		return err
-// 	}
+func (c *ipv64DNSProviderSolver) Initialize(kubeClientConfig *rest.Config, stopCh <-chan struct{}) error {
+	klog.Info("Input variable stopCh is %d length", len(stopCh))
 
-// 	c.client = k8sClient
+	k8sClient, err := kubernetes.NewForConfig(kubeClientConfig)
+	if err != nil {
+		return err
+	}
+	c.client = k8sClient
 
-// 	return nil
-// }
+	return nil
+}
 
 func loadConfig(cfgJSON *extapi.JSON) (ipv64DNSProviderConfig, error) {
 	cfg := ipv64DNSProviderConfig{}
