@@ -15,7 +15,7 @@ certManager:
 image:
   repository: repo.kk.int/cert-manager-webhook-ipv64
   tag: latest
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
 
 nameOverride: ""
 fullnameOverride: ""
