@@ -52,8 +52,12 @@ func (c *Client) AddDNSRecord(subdomain string, praefix string, content string, 
 	params.Add("praefix", praefix)
 	params.Add("type", recordType)
 	params.Add("content", content)
+	encodedParams := params.Encode()
+	url := c.ApiUrl + "?" + encodedParams
 
-	req, err := http.NewRequest("POST", c.ApiUrl+"?"+params.Encode(), nil)
+	klog.Info("URL: ", url)
+
+	req, err := http.NewRequest("POST", url, nil)
 	if err != nil {
 		klog.Error("error creating request: ", err)
 		return err
