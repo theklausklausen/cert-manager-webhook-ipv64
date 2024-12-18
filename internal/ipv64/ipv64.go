@@ -47,11 +47,12 @@ func (c *Client) AddDNSRecord(subdomain string, praefix string, content string, 
 		return fmt.Errorf("unsupported record type: %s", recordType)
 	}
 
-	params := url.Values{}
-	params.Add("add_record", subdomain)
-	params.Add("praefix", praefix)
-	params.Add("type", recordType)
-	params.Add("content", content)
+	params := url.Values{
+		"add_record": {subdomain},
+		"praefix":    {praefix},
+		"type":       {recordType},
+		"content":    {content},
+	}
 	encodedParams := params.Encode()
 	url := c.ApiUrl + "?" + encodedParams
 
@@ -93,64 +94,6 @@ func (c *Client) AddDNSRecord(subdomain string, praefix string, content string, 
 	return nil
 }
 
-// func (e *ipv64DNSProviderSolver) getDNSRecord() error {
-// 	// https://ipv64.net/api.php?get_domains
-
-// 	params := url.Values{}
-// 	params.Add("get_domains", e.domain)
-
-// 	req, err := http.NewRequest("GET", "https://"+e.server+"/api.php?"+params.Encode(), nil)
-// 	if err != nil {
-// 		return err
-// 	}
-
-// 	req.Header.Set("Authorization", "Bearer "+c.Token)
-
-// 	client := &http.Client{}
-// 	resp, err := client.Do(req)
-// 	if err != nil {
-// 		return err
-// 	}
-// 	defer resp.Body.Close()
-
-// 	if resp.StatusCode != http.StatusOK {
-// 		return fmt.Errorf("unexpected status code: %d", resp.StatusCode)
-// 	}
-
-// 	var response interface{}
-// 	body, err := io.ReadAll(resp.Body)
-// 	if err != nil {
-// 		return err
-// 	}
-// 	err = json.Unmarshal(body, &response)
-// 	if err != nil {
-// 		return err
-// 	}
-
-// 	var records []Record
-
-// 	// itterate over each attribute of the json object
-// 	for key, value := range response.(map[string]interface{}) {
-// 		fmt.Println("Key:", key, "Value:", value)
-// 		for _, _record := range value.([]interface{})["records"] {
-// 			records = append(records, Record{
-// 				RecordID: _record.RecordID,
-// 				Content:  _record.Content,
-// 				Type:     _record.Type,
-// 				Praefix:  _record.Praefix,
-// 				Domain:   key,
-// 			})
-// 		}
-// 	}
-
-// 	return nil
-// }
-
-// func (e *ipv64DNSProviderSolver) updateDNSRecord(q dns.Question, msg *dns.Msg, req *dns.Msg) error {
-
-// 	return nil
-// }
-
 func (c *Client) DeleteDNSRecord(subdomain string, praefix string, content string, recordType string) error {
 
 	klog.Info("call function DeleteDNSRecord: subdomain=", subdomain, ", praefix=", praefix, ", content=", content, ", recordType=", recordType)
@@ -159,13 +102,16 @@ func (c *Client) DeleteDNSRecord(subdomain string, praefix string, content strin
 		return fmt.Errorf("unsupported record type: %s", recordType)
 	}
 
-	params := url.Values{}
-	params.Add("del_record", subdomain)
-	params.Add("praefix", praefix)
-	params.Add("type", recordType)
-	params.Add("content", content)
+	params := url.Values{
+		"del_record": {subdomain},
+		"praefix":    {praefix},
+		"type":       {recordType},
+		"content":    {content},
+	}
+	encodedParams := params.Encode()
+	url := c.ApiUrl + "?" + encodedParams
 
-	req, err := http.NewRequest("DELETE", c.ApiUrl+"?"+params.Encode(), nil)
+	req, err := http.NewRequest("DELETE", url, nil)
 	if err != nil {
 		klog.Error("error creating request: ", err)
 		return err
