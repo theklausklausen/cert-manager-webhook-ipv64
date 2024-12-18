@@ -100,3 +100,12 @@ deploy helm:
     HELM_CHART_DIR: deploy
     PACKAGE_NAME: cert-manager-webhook-ipv64
   <<: *only_on_helm_change
+
+deploy container to github:
+  extends: .push_image_to_github
+  variables:
+    GITHUB_PROJECT_NAME: ${CI_PROJECT_NAME}
+    IMAGE_NAME: ${NEXUS_REPO_HOST}/${CI_PROJECT_NAME}
+    IMAGE_TAG: latest
+    GITHUB_IMAGE_NAME: theklausklausen/cert-manager-webhook-ipv64
+    GITHUB_USE_LATEST: "true"
