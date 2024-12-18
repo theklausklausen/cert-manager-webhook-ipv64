@@ -2,6 +2,7 @@ package ipv64
 
 import (
 	"fmt"
+	"io"
 	"net/http"
 	"net/url"
 
@@ -73,7 +74,13 @@ func (c *Client) AddDNSRecord(subdomain string, praefix string, content string, 
 		return fmt.Errorf("unexpected status code: %d", resp.StatusCode)
 	}
 
-	klog.Info("Response Status: ", resp.Status, "Response Headers: ", resp.Header, "Response Body: ", resp.Body)
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		klog.Error("error reading response body: ", err)
+		return err
+	}
+
+	klog.Info("Response Status: ", resp.Status, "Response Headers: ", resp.Header, "Response Body: ", string(body))
 
 	klog.Info("Added record ", praefix, ".", subdomain)
 
