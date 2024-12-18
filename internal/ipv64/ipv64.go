@@ -80,7 +80,9 @@ func (c *Client) AddDNSRecord(subdomain string, praefix string, content string, 
 		return err
 	}
 
-	klog.Info("Response Status: ", resp.Status, "Response Headers: ", resp.Header, "Response Body: ", string(body))
+	klog.Infoln("Response Status: ", resp.Status)
+	klog.Infoln("Response Headers: ", resp.Header)
+	klog.Infoln("Response Body: ", string(body))
 
 	klog.Info("Added record ", praefix, ".", subdomain)
 
