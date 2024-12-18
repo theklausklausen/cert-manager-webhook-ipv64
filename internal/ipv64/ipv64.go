@@ -52,8 +52,6 @@ func NewClient(token string) *Client {
 }
 
 func (c *Client) AddDNSRecord(subdomain string, praefix string, content string, recordType string) error {
-
-	// klog.Info("call function AddDNSRecord: subdomain=%s, praefix=%s, content=%s, recordType=%s")
 	klog.Info("call function AddDNSRecord: subdomain=", subdomain, ", praefix=", praefix, ", content=", content, ", recordType=", recordType)
 
 	if recordType != "TXT" && recordType != "A" && recordType != "CNAME" && recordType != "MX" && recordType != "NS" && recordType != "PTR" && recordType != "SRV" && recordType != "SOA" && recordType != "AAAA" {
@@ -111,7 +109,7 @@ func (c *Client) AddDNSRecord(subdomain string, praefix string, content string, 
 
 	klog.V(4).Infoln("Response: ", response)
 
-	klog.Info("Added record ", praefix, ".", subdomain)
+	klog.Info("Added ", recordType, "record ", praefix, ".", subdomain)
 
 	return nil
 }
@@ -172,7 +170,7 @@ func (c *Client) DeleteDNSRecord(subdomain string, praefix string, content strin
 
 	klog.V(4).Infoln("Response: ", response)
 
-	klog.Info("Deleted record ", praefix, ".", subdomain)
+	klog.Info("Deleted ", recordType, "record ", praefix, ".", subdomain)
 
 	return nil
 }
