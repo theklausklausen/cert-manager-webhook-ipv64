@@ -1,0 +1,10 @@
+---
+docker-build:
+  runs-on: ubuntu-latest
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Build Docker image
+      run: docker build -t ghcr.io/theklausklausen/cert-manager-webhook-ipv64:latest -t ghcr.io/theklausklausen/cert-manager-webhook-ipv64:$(git rev-parse --short HEAD) .
+    - name: Push Docker image
+      run: docker push ghcr.io/theklausklausen/cert-manager-webhook-ipv64:latest && docker push ghcr.io/theklausklausen/cert-manager-webhook-ipv64:$(git rev-parse --short HEAD)
