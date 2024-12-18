@@ -53,15 +53,20 @@ func (c *ipv64DNSProviderSolver) Present(ch *v1alpha1.ChallengeRequest) error {
 
 	config, err := loadConfig(ch.Config)
 	if err != nil {
+		klog.Error("unable to load config: ", err)
 		return err
 	}
 
+	klog.Info("Loaded config: ", config)
+
 	if err != nil {
+		klog.Error("unable to get secret: ", err)
 		return fmt.Errorf("unable to get secret `%s`; %v", ch.ResourceNamespace, err)
 	}
 
 	ipv64Client, err := getClient(config, c.client, ch)
 	if err != nil {
+		klog.Error("unable to get client: ", err)
 		return err
 	}
 
