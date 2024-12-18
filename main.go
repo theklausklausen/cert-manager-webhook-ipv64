@@ -70,9 +70,11 @@ func (c *ipv64DNSProviderSolver) Present(ch *v1alpha1.ChallengeRequest) error {
 		return err
 	}
 
+	prefix := ch.ResolvedFQDN[:len(ch.ResolvedFQDN)-len(config.Subdomain)-1]
+
 	err = ipv64Client.AddDNSRecord(
 		config.Subdomain,
-		"_acme-challenge",
+		prefix,
 		ch.Key,
 		"TXT")
 
@@ -105,9 +107,11 @@ func (c *ipv64DNSProviderSolver) CleanUp(ch *v1alpha1.ChallengeRequest) error {
 		return err
 	}
 
+	prefix := ch.ResolvedFQDN[:len(ch.ResolvedFQDN)-len(config.Subdomain)-1]
+
 	err = ipv64Client.DeleteDNSRecord(
 		config.Subdomain,
-		"_acme-challenge",
+		prefix,
 		ch.Key,
 		"TXT")
 
