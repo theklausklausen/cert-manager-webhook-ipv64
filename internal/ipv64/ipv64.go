@@ -2,6 +2,7 @@ package ipv64
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
@@ -20,6 +21,12 @@ type Record struct {
 	Type     string
 	Praefix  string
 	Domain   string
+}
+
+type AddRecordResponse struct {
+	Info      string `json:"info"`
+	Status    string `json:"status"`
+	AddRecord string `json:"add_record"`
 }
 
 type Client struct {
@@ -79,7 +86,18 @@ func (c *Client) AddDNSRecord(subdomain string, praefix string, content string, 
 		return err
 	}
 
+	response := AddRecordResponse{}
+	err = json.Unmarshal(body, &response)
+	if err != nil {
+		klog.Error("error unmarshalling response body: ", err)
+		return err
+	}
+
 	if resp.StatusCode != http.StatusOK {
+		if resp.StatusCode == http.StatusBadRequest && response.AddRecord == "dns record already there" {
+			klog.Warningln("DNS record already there")
+			return nil
+		}
 		klog.Error("Unexpected Status: ", resp.Status)
 		klog.Error("Response Headers: ", resp.Header)
 		klog.Error("Response Body: ", string(body))
