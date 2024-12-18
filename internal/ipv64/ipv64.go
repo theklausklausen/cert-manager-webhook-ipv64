@@ -73,15 +73,17 @@ func (c *Client) AddDNSRecord(subdomain string, praefix string, content string, 
 	}
 	defer resp.Body.Close()
 
-	if resp.StatusCode != http.StatusOK {
-		klog.Error("unexpected status code: ", resp.StatusCode)
-		return fmt.Errorf("unexpected status code: %d", resp.StatusCode)
-	}
-
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		klog.Error("error reading response body: ", err)
 		return err
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		klog.Error("Unexpected Status: ", resp.Status)
+		klog.Error("Response Headers: ", resp.Header)
+		klog.Error("Response Body: ", string(body))
+		return fmt.Errorf("unexpected status code: %d", resp.StatusCode)
 	}
 
 	klog.Infoln("Response Status: ", resp.Status)
@@ -124,15 +126,17 @@ func (c *Client) DeleteDNSRecord(subdomain string, praefix string, content strin
 	}
 	defer resp.Body.Close()
 
-	if resp.StatusCode != http.StatusOK {
-		klog.Error("unexpected status code: ", resp.StatusCode)
-		return fmt.Errorf("unexpected status code: %d", resp.StatusCode)
-	}
-
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		klog.Error("error reading response body: ", err)
 		return err
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		klog.Error("Unexpected Status: ", resp.Status)
+		klog.Error("Response Headers: ", resp.Header)
+		klog.Error("Response Body: ", string(body))
+		return fmt.Errorf("unexpected status code: %d", resp.StatusCode)
 	}
 
 	klog.Infoln("Response Status: ", resp.Status)
