@@ -29,6 +29,12 @@ type AddRecordResponse struct {
 	AddRecord string `json:"add_record"`
 }
 
+type DeleteRecordResponse struct {
+	Info      string `json:"info"`
+	Status    string `json:"status"`
+	DelRecord string `json:"del_record"`
+}
+
 type Client struct {
 	ApiUrl string
 	Token  string
@@ -98,15 +104,12 @@ func (c *Client) AddDNSRecord(subdomain string, praefix string, content string, 
 			klog.Warningln("DNS record already there")
 			return nil
 		}
-		klog.Error("Unexpected Status: ", resp.Status)
-		klog.Error("Response Headers: ", resp.Header)
-		klog.Error("Response Body: ", string(body))
+		klog.Error("Could not add record: ", response.Info)
+		klog.V(4).Infoln("Response: ", response)
 		return fmt.Errorf("unexpected status code: %d", resp.StatusCode)
 	}
 
-	klog.Infoln("Response Status: ", resp.Status)
-	klog.Infoln("Response Headers: ", resp.Header)
-	klog.Infoln("Response Body: ", string(body))
+	klog.V(4).Infoln("Response: ", response)
 
 	klog.Info("Added record ", praefix, ".", subdomain)
 
@@ -150,18 +153,26 @@ func (c *Client) DeleteDNSRecord(subdomain string, praefix string, content strin
 		return err
 	}
 
+	response := DeleteRecordResponse{}
+	err = json.Unmarshal(body, &response)
+	if err != nil {
+		klog.Error("error unmarshalling response body: ", err)
+		return err
+	}
+
 	if resp.StatusCode != http.StatusOK {
-		klog.Error("Unexpected Status: ", resp.Status)
-		klog.Error("Response Headers: ", resp.Header)
-		klog.Error("Response Body: ", string(body))
+		if resp.StatusCode == http.StatusAccepted && response.DelRecord == "del_record" {
+			klog.Info("Deleted record ", praefix, ".", subdomain)
+			return nil
+		}
+		klog.Error("Could not delete record: ", response.Info)
+		klog.V(4).Infoln("Response: ", response)
 		return fmt.Errorf("unexpected status code: %d", resp.StatusCode)
 	}
 
-	klog.Infoln("Response Status: ", resp.Status)
-	klog.Infoln("Response Headers: ", resp.Header)
-	klog.Infoln("Response Body: ", string(body))
+	klog.V(4).Infoln("Response: ", response)
 
-	klog.Info("Added record ", praefix, ".", subdomain)
+	klog.Info("Deleted record ", praefix, ".", subdomain)
 
 	return nil
 }
