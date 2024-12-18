@@ -48,12 +48,11 @@ func (c *Client) AddDNSRecord(subdomain string, praefix string, content string, 
 		return fmt.Errorf("unsupported record type: %s", recordType)
 	}
 
-	params := url.Values{
-		"add_record": {subdomain},
-		"praefix":    {praefix},
-		"type":       {recordType},
-		"content":    {content},
-	}
+	params := url.Values{}
+	params.Set("add_record", subdomain)
+	params.Set("praefix", praefix)
+	params.Set("type", recordType)
+	params.Set("content", content)
 	// encodedParams := params.Encode()
 
 	req, err := http.NewRequest("POST", c.ApiUrl, bytes.NewBufferString(params.Encode()))
@@ -100,12 +99,11 @@ func (c *Client) DeleteDNSRecord(subdomain string, praefix string, content strin
 		return fmt.Errorf("unsupported record type: %s", recordType)
 	}
 
-	params := url.Values{
-		"del_record": {subdomain},
-		"praefix":    {praefix},
-		"type":       {recordType},
-		"content":    {content},
-	}
+	params := url.Values{}
+	params.Set("del_record", subdomain)
+	params.Set("praefix", praefix)
+	params.Set("type", recordType)
+	params.Set("content", content)
 	// encodedParams := params.Encode()
 
 	req, err := http.NewRequest("DELETE", c.ApiUrl, bytes.NewBufferString(params.Encode()))
