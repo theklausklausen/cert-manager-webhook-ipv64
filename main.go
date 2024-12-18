@@ -80,26 +80,28 @@ func (c *ipv64DNSProviderSolver) Present(ch *v1alpha1.ChallengeRequest) error {
 		return fmt.Errorf("unable to add record `%s`; %v", ch.ResolvedFQDN, err)
 	}
 
-	klog.Info("Presented txt record %v", ch.ResolvedFQDN)
+	klog.Info("Presented txt record ", ch.ResolvedFQDN)
 
 	return nil
 }
 
 func (c *ipv64DNSProviderSolver) CleanUp(ch *v1alpha1.ChallengeRequest) error {
-	klog.Info("call function Cleanup: namespace=%s, zone=%s, fqdn=%s",
-		ch.ResourceNamespace, ch.ResolvedZone, ch.ResolvedFQDN)
+	klog.Info("call function Cleanup: namespace=", ch.ResourceNamespace, ", zone=", ch.ResolvedZone, ", fqdn=", ch.ResolvedFQDN)
 
 	config, err := loadConfig(ch.Config)
 	if err != nil {
+		klog.Error("unable to load config: ", err)
 		return err
 	}
 
 	if err != nil {
+		klog.Error("unable to get secret: ", err)
 		return fmt.Errorf("unable to get secret `%s`; %v", ch.ResourceNamespace, err)
 	}
 
 	ipv64Client, err := getClient(config, c.client, ch)
 	if err != nil {
+		klog.Error("unable to get client: ", err)
 		return err
 	}
 
@@ -113,7 +115,7 @@ func (c *ipv64DNSProviderSolver) CleanUp(ch *v1alpha1.ChallengeRequest) error {
 		return fmt.Errorf("unable to delete record `%s`; %v", ch.ResolvedFQDN, err)
 	}
 
-	klog.Info("Deleted txt record %v", ch.ResolvedFQDN)
+	klog.Info("Deleted txt record ", ch.ResolvedFQDN)
 
 	return nil
 }

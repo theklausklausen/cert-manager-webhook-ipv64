@@ -93,8 +93,10 @@ package helm:
   variables:
     HELM_CHART_DIR: deploy
     PACKAGE_NAME: cert-manager-webhook-ipv64
+  <<: *only_on_helm_change
 deploy helm:
   extends: .deploy_helm_chart
   variables:
     HELM_CHART_DIR: deploy
     PACKAGE_NAME: cert-manager-webhook-ipv64
+  <<: *only_on_helm_change
