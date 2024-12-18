@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
 
 	"k8s.io/klog"
 )
@@ -47,27 +48,15 @@ func (c *Client) AddDNSRecord(subdomain string, praefix string, content string, 
 		return fmt.Errorf("unsupported record type: %s", recordType)
 	}
 
-	// params := url.Values{
-	// 	"add_record": {subdomain},
-	// 	"praefix":    {praefix},
-	// 	"type":       {recordType},
-	// 	"content":    {content},
-	// }
+	params := url.Values{
+		"add_record": {subdomain},
+		"praefix":    {praefix},
+		"type":       {recordType},
+		"content":    {content},
+	}
 	// encodedParams := params.Encode()
 
-	data := bytes.Buffer{}
-	data.Write("add_record=")
-	data.Write(subdomain)
-	data.Write("&praefix=")
-	data.Write(praefix)
-	data.Write("&type=")
-	data.Write(recordType)
-	data.Write("&content=")
-	data.Write(content)
-
-	klog.Info("URL: ", url)
-
-	req, err := http.NewRequest("POST", c.ApiUrl, data.Bytes())
+	req, err := http.NewRequest("POST", c.ApiUrl, bytes.NewBufferString(params.Encode()))
 	if err != nil {
 		klog.Error("error creating request: ", err)
 		return err
@@ -111,25 +100,15 @@ func (c *Client) DeleteDNSRecord(subdomain string, praefix string, content strin
 		return fmt.Errorf("unsupported record type: %s", recordType)
 	}
 
-	// params := url.Values{
-	// 	"del_record": {subdomain},
-	// 	"praefix":    {praefix},
-	// 	"type":       {recordType},
-	// 	"content":    {content},
-	// }
+	params := url.Values{
+		"del_record": {subdomain},
+		"praefix":    {praefix},
+		"type":       {recordType},
+		"content":    {content},
+	}
 	// encodedParams := params.Encode()
 
-	data := bytes.Buffer{}
-	data.Write("del_record=")
-	data.Write(subdomain)
-	data.Write("&praefix=")
-	data.Write(praefix)
-	data.Write("&type=")
-	data.Write(recordType)
-	data.Write("&content=")
-	data.Write(content)
-
-	req, err := http.NewRequest("DELETE", c.ApiUrl, data.Bytes())
+	req, err := http.NewRequest("DELETE", c.ApiUrl, bytes.NewBufferString(params.Encode()))
 	if err != nil {
 		klog.Error("error creating request: ", err)
 		return err
