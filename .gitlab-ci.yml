@@ -7,6 +7,11 @@
       - '**/*.sum'
       - '**/Dockefile'
 
+.only_on_helm_change: &only_on_helm_change
+  only:
+    changes:
+      - '**/deploy/**/*'
+
 include:
   - project: 'klausklausen/templates'
     ref: main
