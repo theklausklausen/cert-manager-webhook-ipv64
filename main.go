@@ -20,13 +20,12 @@ import (
 )
 
 var GroupName = os.Getenv("GROUP_NAME")
+var Version = os.Getenv("VERSION")
 
 func main() {
 	if GroupName == "" {
 		panic("GROUP_NAME must be specified")
 	}
-
-	klog.Info("Starting cert-manager-webhook-ipv64")
 
 	cmd.RunWebhookServer(GroupName,
 		&ipv64DNSProviderSolver{},
@@ -121,12 +120,11 @@ func (c *ipv64DNSProviderSolver) CleanUp(ch *v1alpha1.ChallengeRequest) error {
 }
 
 func (c *ipv64DNSProviderSolver) Initialize(kubeClientConfig *rest.Config, stopCh <-chan struct{}) error {
+	klog.Info("Starting cert-manager-webhook-ipv64...")
+	klog.Info("Group name: ", GroupName)
+	klog.Info("Solver name: ", c.Name())
+	klog.Info("Version: ", Version)
 	klog.Info("call function Initialize")
-	klog.Info("Input variable kubeClientConfig is ", kubeClientConfig)
-	klog.Info("Input variable stopCh is ", len(stopCh), " length")
-	// print group name and solver name
-	klog.Info("Group name is ", GroupName)
-	klog.Info("Solver name is ", c.Name())
 
 	k8sClient, err := kubernetes.NewForConfig(kubeClientConfig)
 	if err != nil {
