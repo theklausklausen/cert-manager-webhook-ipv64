@@ -56,14 +56,14 @@ func (c *Client) AddDNSRecord(subdomain string, praefix string, content string, 
 	// encodedParams := params.Encode()
 
 	data := bytes.Buffer{}
-	data.Write([]byte("add_record="))
-	data.Write([]byte(subdomain))
-	data.Write([]byte("&praefix="))
-	data.Write([]byte(praefix))
-	data.Write([]byte("&type="))
-	data.Write([]byte(recordType))
-	data.Write([]byte("&content="))
-	data.Write([]byte(content))
+	data.Write("add_record=")
+	data.Write(subdomain)
+	data.Write("&praefix=")
+	data.Write(praefix)
+	data.Write("&type=")
+	data.Write(recordType)
+	data.Write("&content=")
+	data.Write(content)
 
 	klog.Info("URL: ", url)
 
@@ -120,14 +120,14 @@ func (c *Client) DeleteDNSRecord(subdomain string, praefix string, content strin
 	// encodedParams := params.Encode()
 
 	data := bytes.Buffer{}
-	data.Write([]byte("del_record="))
-	data.Write([]byte(subdomain))
-	data.Write([]byte("&praefix="))
-	data.Write([]byte(praefix))
-	data.Write([]byte("&type="))
-	data.Write([]byte(recordType))
-	data.Write([]byte("&content="))
-	data.Write([]byte(content))
+	data.Write("del_record=")
+	data.Write(subdomain)
+	data.Write("&praefix=")
+	data.Write(praefix)
+	data.Write("&type=")
+	data.Write(recordType)
+	data.Write("&content=")
+	data.Write(content)
 
 	req, err := http.NewRequest("DELETE", c.ApiUrl, data.Bytes())
 	if err != nil {
