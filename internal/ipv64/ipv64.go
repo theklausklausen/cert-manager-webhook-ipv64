@@ -1,10 +1,10 @@
 package ipv64
 
 import (
+	"bytes"
 	"fmt"
 	"io"
 	"net/http"
-	"net/url"
 
 	"k8s.io/klog"
 )
@@ -47,18 +47,27 @@ func (c *Client) AddDNSRecord(subdomain string, praefix string, content string, 
 		return fmt.Errorf("unsupported record type: %s", recordType)
 	}
 
-	params := url.Values{
-		"add_record": {subdomain},
-		"praefix":    {praefix},
-		"type":       {recordType},
-		"content":    {content},
-	}
-	encodedParams := params.Encode()
-	url := c.ApiUrl + "?" + encodedParams
+	// params := url.Values{
+	// 	"add_record": {subdomain},
+	// 	"praefix":    {praefix},
+	// 	"type":       {recordType},
+	// 	"content":    {content},
+	// }
+	// encodedParams := params.Encode()
+
+	data := bytes.Buffer{}
+	data.Write([]byte("add_record="))
+	data.Write([]byte(subdomain))
+	data.Write([]byte("&praefix="))
+	data.Write([]byte(praefix))
+	data.Write([]byte("&type="))
+	data.Write([]byte(recordType))
+	data.Write([]byte("&content="))
+	data.Write([]byte(content))
 
 	klog.Info("URL: ", url)
 
-	req, err := http.NewRequest("POST", url, nil)
+	req, err := http.NewRequest("POST", c.ApiUrl, data.Bytes())
 	if err != nil {
 		klog.Error("error creating request: ", err)
 		return err
@@ -102,16 +111,25 @@ func (c *Client) DeleteDNSRecord(subdomain string, praefix string, content strin
 		return fmt.Errorf("unsupported record type: %s", recordType)
 	}
 
-	params := url.Values{
-		"del_record": {subdomain},
-		"praefix":    {praefix},
-		"type":       {recordType},
-		"content":    {content},
-	}
-	encodedParams := params.Encode()
-	url := c.ApiUrl + "?" + encodedParams
+	// params := url.Values{
+	// 	"del_record": {subdomain},
+	// 	"praefix":    {praefix},
+	// 	"type":       {recordType},
+	// 	"content":    {content},
+	// }
+	// encodedParams := params.Encode()
 
-	req, err := http.NewRequest("DELETE", url, nil)
+	data := bytes.Buffer{}
+	data.Write([]byte("del_record="))
+	data.Write([]byte(subdomain))
+	data.Write([]byte("&praefix="))
+	data.Write([]byte(praefix))
+	data.Write([]byte("&type="))
+	data.Write([]byte(recordType))
+	data.Write([]byte("&content="))
+	data.Write([]byte(content))
+
+	req, err := http.NewRequest("DELETE", c.ApiUrl, data.Bytes())
 	if err != nil {
 		klog.Error("error creating request: ", err)
 		return err
@@ -132,9 +150,17 @@ func (c *Client) DeleteDNSRecord(subdomain string, praefix string, content strin
 		return fmt.Errorf("unexpected status code: %d", resp.StatusCode)
 	}
 
-	klog.Info("Response Status: ", resp.Status, "Response Headers: ", resp.Header, "Response Body: ", resp.Body)
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		klog.Error("error reading response body: ", err)
+		return err
+	}
 
-	klog.Info("Deleted record ", praefix, ".", subdomain)
+	klog.Infoln("Response Status: ", resp.Status)
+	klog.Infoln("Response Headers: ", resp.Header)
+	klog.Infoln("Response Body: ", string(body))
+
+	klog.Info("Added record ", praefix, ".", subdomain)
 
 	return nil
 }
