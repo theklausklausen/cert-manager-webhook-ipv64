@@ -65,6 +65,10 @@ spec:
         maxDuration: 3m0s
 ```
 
+AI translates it to following command, but not yet testet:
+
+`helm install cert-manager-certmanager-webhook-ipv64 <path-to-repo>/cert-manager-webhook-ipv64/Chart.yaml --values cert-manager-webhook-ipv64/values.yaml`
+
 ### Cluster Issuer
 
 ```yaml
@@ -110,3 +114,4 @@ data:
 - [ ] somehow deal with the rate limit usage
 - [ ] improve testing / linting / security scanning
 - [ ] Github Helm Repo
+- [ ] Fix description of standard helm install
