@@ -92,7 +92,7 @@ func (c *Client) AddDNSRecord(subdomain string, praefix string, content string, 
 		return err
 	}
 
-	if resp.StatusCode != http.StatusOK {
+	if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusCreated {
 		if resp.StatusCode == http.StatusBadRequest && response.AddRecord == "dns record already there" {
 			klog.Warningln("DNS record already there")
 			return nil
