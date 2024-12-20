@@ -13,7 +13,7 @@ certManager:
   serviceAccountName: cert-manager
 
 image:
-  repository: repo.kk.int/cert-manager-webhook-ipv64
+  repository: ghcr.io/theklausklausen/cert-manager-webhook-ipv64
   tag: latest
   pullPolicy: Always
 
