@@ -101,5 +101,12 @@ metadata:
   namespace: cert-manager
 type: Opaque
 data:
-  api-key: "<base53 encoded secret>" # the key has to be api-key
+  api-key: "<base64 encoded secret>" # the key has to be 'api-key'
 ```
+
+## ToDos and Ideas
+
+- [ ] define secret key via values file
+- [ ] somehow deal with the rate limit usage
+- [ ] improve testing / linting / security scanning
+- [ ] Github Helm Repo
