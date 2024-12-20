@@ -1,0 +1,29 @@
+name: Package and Push Helm Chart
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  package-helm:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Helm
+      uses: azure/setup-helm@v1
+
+    - name: Package Helm chart
+      run: helm package ./deploy/cert-manager-webhook-ipv64
+
+    - name: Upload Helm chart to Artifact Hub
+      env:
+        ARTIFACT_HUB_API_KEY: ${{ secrets.ARTIFACT_HUB_API_KEY }}
+      run: |
+        curl -X POST \
+          -H "Authorization: Bearer $ARTIFACT_HUB_API_KEY" \
+          -F "package=@$(ls *.tgz)" \
+          https://artifacthub.io/api/v1/packages/helm
