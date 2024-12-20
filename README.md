@@ -1,0 +1,1 @@
+> Note: Make sure the webhooks ca/tls secrets exist before the webhook pod exists. Otherwise the apiservice resource does not get a trustet certificate by the cainjector and the cert-manager-webhook does not trust your webhook.
