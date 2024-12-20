@@ -43,21 +43,15 @@ type ipv64DNSProviderConfig struct {
 }
 
 func (c *ipv64DNSProviderSolver) Name() string {
-	klog.Info("call function Name")
 	return "cert-manager-webhook-ipv64"
 }
 
 func (c *ipv64DNSProviderSolver) Present(ch *v1alpha1.ChallengeRequest) error {
-	klog.Info("call function Present: namespace=", ch.ResourceNamespace, ", zone=", ch.ResolvedZone, ", fqdn=", ch.ResolvedFQDN)
-	klog.Info("Challenge request: ", ch)
-
 	config, err := loadConfig(ch.Config)
 	if err != nil {
 		klog.Error("unable to load config: ", err)
 		return err
 	}
-
-	klog.Info("Loaded config: ", config)
 
 	if err != nil {
 		klog.Error("unable to get secret: ", err)
@@ -88,8 +82,6 @@ func (c *ipv64DNSProviderSolver) Present(ch *v1alpha1.ChallengeRequest) error {
 }
 
 func (c *ipv64DNSProviderSolver) CleanUp(ch *v1alpha1.ChallengeRequest) error {
-	klog.Info("call function Cleanup: namespace=", ch.ResourceNamespace, ", zone=", ch.ResolvedZone, ", fqdn=", ch.ResolvedFQDN)
-
 	config, err := loadConfig(ch.Config)
 	if err != nil {
 		klog.Error("unable to load config: ", err)
@@ -128,8 +120,6 @@ func (c *ipv64DNSProviderSolver) Initialize(kubeClientConfig *rest.Config, stopC
 	klog.Info("Starting cert-manager-webhook-ipv64...")
 	klog.Info("Group name: ", GroupName)
 	klog.Info("Solver name: ", c.Name())
-	klog.Info("Version: ", Version)
-	klog.Info("call function Initialize")
 
 	k8sClient, err := kubernetes.NewForConfig(kubeClientConfig)
 	if err != nil {
@@ -141,7 +131,6 @@ func (c *ipv64DNSProviderSolver) Initialize(kubeClientConfig *rest.Config, stopC
 }
 
 func loadConfig(cfgJSON *extapi.JSON) (ipv64DNSProviderConfig, error) {
-	klog.Info("Loading config")
 	cfg := ipv64DNSProviderConfig{}
 	if cfgJSON == nil {
 		return cfg, nil
@@ -154,13 +143,11 @@ func loadConfig(cfgJSON *extapi.JSON) (ipv64DNSProviderConfig, error) {
 }
 
 func getTokenFromSecret(secretName string, client *kubernetes.Clientset, ch *v1alpha1.ChallengeRequest) (string, error) {
-	klog.Info("Getting token from secret")
 	sec, err := client.CoreV1().Secrets(ch.ResourceNamespace).Get(context.TODO(), secretName, metav1.GetOptions{})
 	if err != nil {
 		klog.Error("Error getting secret: ", err)
 		return "", err
 	}
-	klog.Info("Got secret")
 	token, err := stringFromSecretData(sec.Data, "api-key")
 	if err != nil {
 		return "", fmt.Errorf("error decoding api-key: %v", err)
@@ -169,7 +156,6 @@ func getTokenFromSecret(secretName string, client *kubernetes.Clientset, ch *v1a
 }
 
 func getClient(cfg ipv64DNSProviderConfig, client *kubernetes.Clientset, ch *v1alpha1.ChallengeRequest) (*ipv64.Client, error) {
-	klog.Info("Creating new ipv64 client")
 	token, err := getTokenFromSecret(cfg.SecretName, client, ch)
 	if err != nil {
 		return nil, err
@@ -178,7 +164,6 @@ func getClient(cfg ipv64DNSProviderConfig, client *kubernetes.Clientset, ch *v1a
 }
 
 func stringFromSecretData(secretData map[string][]byte, key string) (string, error) {
-	klog.Info("Getting string from secret data")
 	data, ok := secretData[key]
 	if !ok {
 		return "", fmt.Errorf("key %q not found in secret data", key)

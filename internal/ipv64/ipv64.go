@@ -52,8 +52,6 @@ func NewClient(token string) *Client {
 }
 
 func (c *Client) AddDNSRecord(subdomain string, praefix string, content string, recordType string) error {
-	klog.Info("call function AddDNSRecord: subdomain=", subdomain, ", praefix=", praefix, ", content=", content, ", recordType=", recordType)
-
 	if recordType != "TXT" && recordType != "A" && recordType != "CNAME" && recordType != "MX" && recordType != "NS" && recordType != "PTR" && recordType != "SRV" && recordType != "SOA" && recordType != "AAAA" {
 		klog.Error("unsupported record type: ", recordType)
 		return fmt.Errorf("unsupported record type: %s", recordType)
@@ -64,9 +62,6 @@ func (c *Client) AddDNSRecord(subdomain string, praefix string, content string, 
 	params.Set("praefix", praefix)
 	params.Set("type", recordType)
 	params.Set("content", content)
-
-	klog.Info("params: ", params)
-	klog.Info("encoded params: ", params.Encode())
 
 	req, err := http.NewRequest("POST", c.ApiUrl, bytes.NewBufferString(params.Encode()))
 	if err != nil {
@@ -107,16 +102,12 @@ func (c *Client) AddDNSRecord(subdomain string, praefix string, content string, 
 		return fmt.Errorf("unexpected status code: %d", resp.StatusCode)
 	}
 
-	klog.V(4).Infoln("Response: ", response)
-
 	klog.Info("Added ", recordType, "record ", praefix, ".", subdomain)
 
 	return nil
 }
 
 func (c *Client) DeleteDNSRecord(subdomain string, praefix string, content string, recordType string) error {
-
-	klog.Info("call function DeleteDNSRecord: subdomain=", subdomain, ", praefix=", praefix, ", content=", content, ", recordType=", recordType)
 
 	if recordType != "TXT" && recordType != "A" && recordType != "CNAME" && recordType != "MX" && recordType != "NS" && recordType != "PTR" && recordType != "SRV" && recordType != "SOA" && recordType != "AAAA" {
 		return fmt.Errorf("unsupported record type: %s", recordType)
@@ -127,7 +118,6 @@ func (c *Client) DeleteDNSRecord(subdomain string, praefix string, content strin
 	params.Set("praefix", praefix)
 	params.Set("type", recordType)
 	params.Set("content", content)
-	// encodedParams := params.Encode()
 
 	req, err := http.NewRequest("DELETE", c.ApiUrl, bytes.NewBufferString(params.Encode()))
 	if err != nil {
@@ -167,8 +157,6 @@ func (c *Client) DeleteDNSRecord(subdomain string, praefix string, content strin
 		klog.V(4).Infoln("Response: ", response)
 		return fmt.Errorf("unexpected status code: %d", resp.StatusCode)
 	}
-
-	klog.V(4).Infoln("Response: ", response)
 
 	klog.Info("Deleted ", recordType, "record ", praefix, ".", subdomain)
 
