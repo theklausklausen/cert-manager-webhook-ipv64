@@ -10,7 +10,7 @@
 .only_on_helm_change: &only_on_helm_change
   only:
     changes:
-      - '**/deploy/**/*'
+      - '**/charts/**/*'
 
 .only_on_markdown_change: &only_on_markdown_change
   only:
