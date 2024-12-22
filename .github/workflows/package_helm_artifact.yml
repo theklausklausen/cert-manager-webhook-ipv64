@@ -27,4 +27,4 @@ jobs:
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
         with:
-          charts_dir: deploy/cert-manager-webhook-ipv64
+          charts_dir: charts/cert-manager-webhook-ipv64

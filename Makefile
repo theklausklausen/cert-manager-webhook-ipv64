@@ -9,7 +9,7 @@ OUT := $(shell pwd)/_out
 
 KUBEBUILDER_VERSION=1.28.0
 
-HELM_FILES := $(shell find deploy/cert-manager-webhook-ipv64)
+HELM_FILES := $(shell find charts/cert-manager-webhook-ipv64)
 
 .PHONY: help
 help: ## Display this help.
@@ -43,7 +43,7 @@ $(OUT)/rendered-manifest.yaml: $(HELM_FILES) | $(OUT)
 	    --name-template cert-manager-webhook-ipv64 \
             --set image.repository=$(IMAGE_NAME) \
             --set image.tag=$(IMAGE_TAG) \
-            deploy/cert-manager-webhook-ipv64 > $@
+            charts/cert-manager-webhook-ipv64 > $@
 
 _test $(OUT) _test/kubebuilder-$(KUBEBUILDER_VERSION)-$(OS)-$(ARCH):
 	mkdir -p $@
