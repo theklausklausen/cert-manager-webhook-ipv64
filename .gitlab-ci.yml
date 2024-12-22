@@ -76,6 +76,8 @@ prettier lint:
   extends: .prettier
 helm lint:
   extends: .helm-lint
+  variables:
+    HELM_CHART_DIR: deploy
 
 # test
 test build image:
