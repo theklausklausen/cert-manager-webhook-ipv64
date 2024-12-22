@@ -1,3 +1,0 @@
-[submodule "shared-configuration"]
-	path = shared-configuration
-	url = ssh://git@gitlab.kk.int:2222/klausklausen/shared-configuration.git
