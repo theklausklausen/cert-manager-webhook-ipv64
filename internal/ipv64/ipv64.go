@@ -102,7 +102,7 @@ func (c *Client) AddDNSRecord(subdomain string, praefix string, content string, 
 		return fmt.Errorf("unexpected status code: %d", resp.StatusCode)
 	}
 
-	klog.Info("Added ", recordType, "record ", praefix, subdomain)
+	klog.Info("Added ", recordType, " record ", praefix, subdomain)
 
 	return nil
 }
@@ -158,7 +158,7 @@ func (c *Client) DeleteDNSRecord(subdomain string, praefix string, content strin
 		return fmt.Errorf("unexpected status code: %d", resp.StatusCode)
 	}
 
-	klog.Info("Deleted ", recordType, "record ", praefix, subdomain)
+	klog.Info("Deleted ", recordType, " record ", praefix, subdomain)
 
 	return nil
 }

@@ -12,6 +12,17 @@
     changes:
       - '**/deploy/**/*'
 
+.only_on_markdown_change: &only_on_markdown_change
+  only:
+    changes:
+      - '**/*.md'
+
+.only_on_yaml_change: &only_on_yaml_change
+  only:
+    changes:
+      - '**/*.yml'
+      - '**/*.yaml'
+
 include:
   - project: 'klausklausen/templates'
     ref: main
@@ -40,9 +51,9 @@ variables:
   GO_IMAGE: golang:1.23
 
 stages:
+  - security
   - lint
   - test
-  - security
   - build
   - package
   - deploy
@@ -73,14 +84,17 @@ stages:
 # lint
 markdown lint:
   extends: .markdown_lint
+  <<: *only_on_markdown_change
 yaml lint:
   extends: .yaml_lint
+  <<: *only_on_yaml_change
 prettier lint:
   extends: .prettier
 helm lint:
   extends: .helm_lint
   variables:
     HELM_CHART_DIR: deploy
+  <<: *only_on_helm_change
 
 # test
 test build image:
@@ -89,15 +103,18 @@ test build image:
     IMAGE_NAME: ${NEXUS_REPO_HOST}/${CI_PROJECT_NAME}
     IMAGE_TAG: ${CI_COMMIT_SHORT_SHA}
     BUILD_TARGET: prod
+  <<: *only_on_code_change
 render helm chart:
   extends: .render_helm_chart
   variables:
     HELM_CHART_DIR: deploy
+  <<: *only_on_helm_change
 run_test_suite:
   stage: test
   image: golang:1.23
   script:
     - TEST_ZONE_NAME=example.com make test
+  <<: *only_on_code_change
 
 # security
 package scan:
