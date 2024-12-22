@@ -20,7 +20,7 @@ jobs:
           git config --global user.name "${{ secrets.GIT_USER_NAME }}"
 
       - name: Run Chart Releaser
-        uses: helm/chart-releaser-action@v2
+        uses: helm/chart-releaser-action@v1.6.0
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
         with:
