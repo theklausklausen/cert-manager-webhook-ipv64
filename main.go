@@ -17,6 +17,8 @@ import (
 	ipv64 "cert-manager-webhook-ipv64/internal/ipv64"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+	"github.com/getsentry/sentry-go"
 )
 
 var GroupName = os.Getenv("GROUP_NAME")
@@ -120,6 +122,14 @@ func (c *ipv64DNSProviderSolver) Initialize(kubeClientConfig *rest.Config, stopC
 	klog.Info("Starting cert-manager-webhook-ipv64...")
 	klog.Info("Group name: ", GroupName)
 	klog.Info("Solver name: ", c.Name())
+
+	sentryDNS := os.Getenv("SENTRY_DNS")
+	if sentryDNS != "" {
+		klog.Info("Sentry DNS is enabled")
+		sentry.Init(sentry.ClientOptions{
+			Dsn: sentryDNS,
+		})
+	}
 
 	k8sClient, err := kubernetes.NewForConfig(kubeClientConfig)
 	if err != nil {

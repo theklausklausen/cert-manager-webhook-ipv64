@@ -20,6 +20,9 @@ image:
 nameOverride: ""
 fullnameOverride: ""
 
+sentry:
+  dsn: ""
+
 service:
   type: ClusterIP
   port: 443
