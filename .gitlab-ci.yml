@@ -31,6 +31,9 @@ include:
   - project: 'klausklausen/templates'
     ref: main
     file: 'lint.yml'
+  - project: 'klausklausen/templates'
+    ref: main
+    file: 'security.yml'
 
 variables:
   TAG: $CI_COMMIT_BRANCH
@@ -69,13 +72,13 @@ stages:
 
 # lint
 markdown lint:
-  extends: .markdown-lint
+  extends: .markdown_lint
 yaml lint:
-  extends: .yaml-lint
+  extends: .yaml_lint
 prettier lint:
   extends: .prettier
 helm lint:
-  extends: .helm-lint
+  extends: .helm_lint
   variables:
     HELM_CHART_DIR: deploy
 
