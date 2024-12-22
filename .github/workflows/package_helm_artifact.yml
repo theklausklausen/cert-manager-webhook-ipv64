@@ -12,6 +12,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         with:
+          filter: deploy/cert-manager-webhook-ipv64/*
           submodules: false
 
       - name: Configure Git User
