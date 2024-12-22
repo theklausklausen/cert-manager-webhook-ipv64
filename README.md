@@ -67,7 +67,10 @@ spec:
 
 AI translates it to following command, but not yet testet:
 
-`helm install cert-manager-certmanager-webhook-ipv64 <path-to-repo>/cert-manager-webhook-ipv64/Chart.yaml --values cert-manager-webhook-ipv64/values.yaml`
+```bash
+helm repo add cert-manager-webhook-ipv64 https://theklausklausen.github.io/cert-manager-webhook-ipv64/
+helm install cert-manager-webhook-ipv64 --values path/to/values.yaml
+```
 
 ### Cluster Issuer
 

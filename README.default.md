@@ -56,14 +56,3 @@ $ TEST_ZONE_NAME=example.com. make test
 
 The example file has a number of areas you must fill in and replace with your
 own options in order for tests to pass.
-
----
-
-Links:
-  - API: https://ipv64.net/dyndns_updater_api
-
-Workflow:
-  1. generate record
-  2. update record
-  3. query record
-  4. delete record
