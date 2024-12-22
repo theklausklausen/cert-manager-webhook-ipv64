@@ -15,7 +15,7 @@
 include:
   - project: 'klausklausen/templates'
     ref: main
-    file: 'tests.yml'
+    file: 'test.yml'
   - project: 'klausklausen/templates'
     ref: main
     file: 'deploy.yml'
@@ -31,6 +31,7 @@ variables:
   GO_IMAGE: golang:1.23
 
 stages:
+  - lint
   - test
   - security
   - build
@@ -60,18 +61,40 @@ stages:
 #   script:
 #     - go test -v ./...
 
-security:
-  stage: security
-  image: aquasec/trivy:latest
-  script:
-    - trivy fs --exit-code 1 --severity HIGH,CRITICAL .
-  allow_failure: true
+# lint
+markdown lint:
+  extends: .markdown-lint
+yaml lint:
+  extends: .yaml-lint
+prettier lint:
+  extends: .prettier
+helm lint:
+  extends: .helm-lint
 
+# test
+test build image:
+  extends: .build_test
+  variables:
+    IMAGE_NAME: ${NEXUS_REPO_HOST}/${CI_PROJECT_NAME}
+    IMAGE_TAG: ${CI_COMMIT_SHORT_SHA}
+    BUILD_TARGET: prod
+render helm chart:
+  extends: .render_helm_chart
+  variables:
+    HELM_CHART_DIR: deploy
 run_test_suite:
   stage: test
   image: golang:1.23
   script:
     - TEST_ZONE_NAME=example.com make test
+
+# security
+package scan:
+  extends: .package_scan
+secret scan:
+  extends: .secret_scan
+
+# build
 build image:
   extends: .image_multi_arch
   variables:
@@ -79,6 +102,8 @@ build image:
     IMAGE_TAG: ${CI_COMMIT_SHORT_SHA}
     BUILD_TARGET: prod
   <<: *only_on_code_change
+
+# package
 package image:
   extends: .image_tag
   variables:
@@ -86,13 +111,14 @@ package image:
   tags:
     - amd64
   <<: *only_on_code_change
-
 package helm:
   extends: .package_helm_chart
   variables:
     HELM_CHART_DIR: deploy
     PACKAGE_NAME: cert-manager-webhook-ipv64
   <<: *only_on_helm_change
+
+# deploy
 deploy helm:
   extends: .deploy_helm_chart
   variables:
