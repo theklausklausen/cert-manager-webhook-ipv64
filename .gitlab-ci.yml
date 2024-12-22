@@ -102,8 +102,10 @@ run_test_suite:
 # security
 package scan:
   extends: .package_scan
+  allow_failure: false
 secret scan:
   extends: .secret_scan
+  allow_failure: false
 
 # build
 build image:

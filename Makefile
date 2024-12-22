@@ -54,3 +54,9 @@ run:
 link-tc:
 	rm -rf /home/$(USER)/.config/Code/User/globalStorage/rangav.vscode-thunder-client
 	ln -s ${PWD}/.vscode/rangav.vscode-thunder-client /home/$(USER)/.config/Code/User/globalStorage/
+
+test-suite:
+	docker run --rm -v $(PWD):/src -w /src golang:1.23.4 sh -c 'cd /src && TEST_ZONE_NAME=example.com make test'
+
+go-mod-tidy:
+	docker run --rm -v $(PWD):/src -w /src golang:1.23.4 sh -c 'cd /src && go mod tidy'
