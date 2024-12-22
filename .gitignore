@@ -20,5 +20,3 @@ _test
 testdata/my-custom-solver/secret.yml
 
 workspace.env
-
-.gitmodules
