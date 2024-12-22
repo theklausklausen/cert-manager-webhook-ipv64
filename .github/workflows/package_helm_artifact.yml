@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - main
-    paths:  
-      - '**/deploy/**/*'
 
 jobs:
   package_helm_chart:
