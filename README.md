@@ -48,6 +48,7 @@ spec:
         fullnameOverride: cert-manager-webhook-ipv64
         nameOverride: webhook-ipv64
         image:
+          repository: ghcr.io/theklausklausen/cert-manager-webhook-ipv64
           pullPolicy: Always
   sources: []
   project: default
