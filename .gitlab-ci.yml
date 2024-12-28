@@ -85,6 +85,9 @@ helm lint:
   variables:
     HELM_CHART_DIR: charts
   <<: *only_on_helm_change
+go-lint:
+  extends: .go_lint
+  <<: *only_on_code_change
 
 # test
 render helm chart:
