@@ -17,6 +17,8 @@ RUN CGO_ENABLED=0 go build -o webhook -ldflags '-w -extldflags "-static"' .
 
 FROM alpine:3.18 AS prod
 
+ENV VERSION=${CI_PIPELINE_IID}
+
 RUN apk add --no-cache ca-certificates
 
 COPY --from=build /workspace/webhook /usr/local/bin/webhook

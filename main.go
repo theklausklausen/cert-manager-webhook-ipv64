@@ -21,7 +21,10 @@ import (
 	"github.com/getsentry/sentry-go"
 )
 
+// GroupName is the group name use in the cert-manager webhook
 var GroupName = os.Getenv("GROUP_NAME")
+
+// Version is the version of the cert-manager webhook
 var Version = os.Getenv("VERSION")
 
 func main() {
