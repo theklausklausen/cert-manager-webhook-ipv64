@@ -58,22 +58,12 @@ stages:
   - package
   - deploy
 
-# lint helm:
-#   extends: .lint_helm_chart
-
-# yaml lint:
-#   extends: .lint_yaml
-
 # go-lint:
 #   stage: test
 #   image: golangci/golangci-lint:v1.62.2
 #   script:
 #     - golangci-lint run -v
 #   allow_failure: true
-
-
-# prettier:
-#   extends: .lint_prettier
 
 # go-test:
 #   stage: test
@@ -97,13 +87,6 @@ helm lint:
   <<: *only_on_helm_change
 
 # test
-test build image:
-  extends: .build_test
-  variables:
-    IMAGE_NAME: ${NEXUS_REPO_HOST}/${CI_PROJECT_NAME}
-    IMAGE_TAG: ${CI_COMMIT_SHORT_SHA}
-    BUILD_TARGET: prod
-  <<: *only_on_code_change
 render helm chart:
   extends: .render_helm_chart
   variables:
