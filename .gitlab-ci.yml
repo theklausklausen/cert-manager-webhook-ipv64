@@ -126,12 +126,12 @@ stages:
 #   tags:
 #     - amd64
 #   <<: *only_on_code_change
-# package helm:
-#   extends: .package_helm_chart
-#   variables:
-#     HELM_CHART_DIR: charts
-#     PACKAGE_NAME: cert-manager-webhook-ipv64
-#   <<: *only_on_helm_change
+package helm:
+  extends: .package_helm_chart
+  variables:
+    HELM_CHART_DIR: charts
+    PACKAGE_NAME: cert-manager-webhook-ipv64
+  <<: *only_on_helm_change
 
 # deploy
 deploy helm:
