@@ -72,60 +72,60 @@ stages:
 #   script:
 #     - go test -v ./...
 
-# # lint
-# markdown lint:
-#   extends: .markdown_lint
-#   <<: *only_on_markdown_change
-# yaml lint:
-#   extends: .yaml_lint
-#   <<: *only_on_yaml_change
-# prettier lint:
-#   extends: .prettier
-# helm lint:
-#   extends: .helm_lint
-#   variables:
-#     HELM_CHART_DIR: charts
-#   <<: *only_on_helm_change
-# go-lint:
-#   extends: .go_lint
-#   <<: *only_on_code_change
+# lint
+markdown lint:
+  extends: .markdown_lint
+  <<: *only_on_markdown_change
+yaml lint:
+  extends: .yaml_lint
+  <<: *only_on_yaml_change
+prettier lint:
+  extends: .prettier
+helm lint:
+  extends: .helm_lint
+  variables:
+    HELM_CHART_DIR: charts
+  <<: *only_on_helm_change
+go-lint:
+  extends: .go_lint
+  <<: *only_on_code_change
 
-# # test
-# render helm chart:
-#   extends: .render_helm_chart
-#   variables:
-#     HELM_CHART_DIR: charts
-#   <<: *only_on_helm_change
-# run_test_suite:
-#   stage: test
-#   image: golang:1.23
-#   script:
-#     - TEST_ZONE_NAME=example.com make test
-#   <<: *only_on_code_change
+# test
+render helm chart:
+  extends: .render_helm_chart
+  variables:
+    HELM_CHART_DIR: charts
+  <<: *only_on_helm_change
+run_test_suite:
+  stage: test
+  image: golang:1.23
+  script:
+    - TEST_ZONE_NAME=example.com make test
+  <<: *only_on_code_change
 
-# # security
-# package scan:
-#   extends: .package_scan
-# secret scan:
-#   extends: .secret_scan
+# security
+package scan:
+  extends: .package_scan
+secret scan:
+  extends: .secret_scan
 
-# # build
-# build image:
-#   extends: .image_multi_arch
-#   variables:
-#     IMAGE_NAME: ${NEXUS_REPO_HOST}/${CI_PROJECT_NAME}
-#     IMAGE_TAG: ${CI_COMMIT_SHORT_SHA}
-#     BUILD_TARGET: prod
-#   <<: *only_on_code_change
+# build
+build image:
+  extends: .image_multi_arch
+  variables:
+    IMAGE_NAME: ${NEXUS_REPO_HOST}/${CI_PROJECT_NAME}
+    IMAGE_TAG: ${CI_COMMIT_SHORT_SHA}
+    BUILD_TARGET: prod
+  <<: *only_on_code_change
 
-# # package
-# package image:
-#   extends: .image_tag
-#   variables:
-#     IMAGE_NAME: ${NEXUS_REPO_HOST}/${CI_PROJECT_NAME}
-#   tags:
-#     - amd64
-#   <<: *only_on_code_change
+# package
+package image:
+  extends: .image_tag
+  variables:
+    IMAGE_NAME: ${NEXUS_REPO_HOST}/${CI_PROJECT_NAME}
+  tags:
+    - amd64
+  <<: *only_on_code_change
 package helm:
   extends: .package_helm_chart
   variables:
@@ -141,29 +141,29 @@ deploy helm:
     PACKAGE_NAME: cert-manager-webhook-ipv64
   <<: *only_on_helm_change
 
-# publish
-publish image to github:
-  stage: publish
-  variables:
-    GIT_STRATEGY: none
-    IMAGE_NAME: ${NEXUS_REPO_HOST}/${CI_PROJECT_NAME}
-    TAG: ${CI_COMMIT_SHORT_SHA}
-  image: docker:dind
-  before_script:
-    - echo $GITHUB_CONTAINER_TOKEN | docker login ghcr.io -u $GITHUB_USERNAME --password-stdin
-    - echo $NEXUS_TOKEN | docker login ${NEXUS_REPO_HOST} -u $NEXUS_USER --password-stdin
-  script:
-    - docker pull 
-      ${NEXUS_REPO_HOST}/${CI_PROJECT_NAME}:${CI_COMMIT_SHORT_SHA}
-    - docker tag 
-      ${NEXUS_REPO_HOST}/${CI_PROJECT_NAME}:${CI_COMMIT_SHORT_SHA}
-      ghcr.io/theklausklausen/cert-manager-webhook-ipv64:${CI_PIPELINE_IID}
-    - docker tag 
-      ${NEXUS_REPO_HOST}/${CI_PROJECT_NAME}:${CI_COMMIT_SHORT_SHA}
-      ghcr.io/theklausklausen/cert-manager-webhook-ipv64:latest
-    - docker push 
-      ghcr.io/theklausklausen/cert-manager-webhook-ipv64:${CI_PIPELINE_IID}
-  after_script:
-    - docker logout ${NEXUS_REPO_HOST}
-    - docker logout ghcr.io
-  <<: *only_on_code_change
+# # publish
+# publish image to github:
+#   stage: publish
+#   variables:
+#     GIT_STRATEGY: none
+#     IMAGE_NAME: ${NEXUS_REPO_HOST}/${CI_PROJECT_NAME}
+#     TAG: ${CI_COMMIT_SHORT_SHA}
+#   image: docker:dind
+#   before_script:
+#     - echo $GITHUB_CONTAINER_TOKEN | docker login ghcr.io -u $GITHUB_USERNAME --password-stdin
+#     - echo $NEXUS_TOKEN | docker login ${NEXUS_REPO_HOST} -u $NEXUS_USER --password-stdin
+#   script:
+#     - docker pull 
+#       ${NEXUS_REPO_HOST}/${CI_PROJECT_NAME}:${CI_COMMIT_SHORT_SHA}
+#     - docker tag 
+#       ${NEXUS_REPO_HOST}/${CI_PROJECT_NAME}:${CI_COMMIT_SHORT_SHA}
+#       ghcr.io/theklausklausen/cert-manager-webhook-ipv64:${CI_PIPELINE_IID}
+#     - docker tag 
+#       ${NEXUS_REPO_HOST}/${CI_PROJECT_NAME}:${CI_COMMIT_SHORT_SHA}
+#       ghcr.io/theklausklausen/cert-manager-webhook-ipv64:latest
+#     - docker push 
+#       ghcr.io/theklausklausen/cert-manager-webhook-ipv64:${CI_PIPELINE_IID}
+#   after_script:
+#     - docker logout ${NEXUS_REPO_HOST}
+#     - docker logout ghcr.io
+#   <<: *only_on_code_change
