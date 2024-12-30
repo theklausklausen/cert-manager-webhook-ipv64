@@ -148,12 +148,10 @@ publish image to github:
     GIT_STRATEGY: none
     IMAGE_NAME: ${NEXUS_REPO_HOST}/${CI_PROJECT_NAME}
     TAG: ${CI_COMMIT_SHORT_SHA}
-  # pull image from registry, retag it for github, push it to github
-  # without docker-in-docker
   image: docker:dind
   before_script:
-    - docker login ${NEXUS_REPO_HOST} -u $NEXUS_USER -p $NEXUS_TOKEN
-    - docker login ghcr.io -u $GITHUB_USERNAME -p $GITHUB_CONTAINER_TOKEN
+    - echo $GITHUB_CONTAINER_TOKEN | docker login ghcr.io -u $GITHUB_USERNAME --password-stdin
+    - echo $NEXUS_TOKEN | docker login ${NEXUS_REPO_HOST} -u $NEXUS_USER --password-stdin
   script:
     - docker pull 
       ${NEXUS_REPO_HOST}/${CI_PROJECT_NAME}:${CI_COMMIT_SHORT_SHA}
