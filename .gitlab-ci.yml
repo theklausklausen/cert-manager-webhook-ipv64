@@ -57,6 +57,7 @@ stages:
   - build
   - package
   - deploy
+  - publish
 
 # go-lint:
 #   stage: test
@@ -139,3 +140,32 @@ deploy helm:
     HELM_CHART_DIR: charts
     PACKAGE_NAME: cert-manager-webhook-ipv64
   <<: *only_on_helm_change
+
+# publish
+publish image to github:
+  stage: publish
+  variables:
+    GIT_STRATEGY: none
+    IMAGE_NAME: ${NEXUS_REPO_HOST}/${CI_PROJECT_NAME}
+    TAG: ${CI_COMMIT_SHORT_SHA}
+  # pull image from registry, retag it for github, push it to github
+  # without docker-in-docker
+  image: docker:dind
+  before_script:
+    - docker login ${NEXUS_REPO_HOST} -u $NEXUS_USER -p $NEXUS_TOKEN
+    - docker login ghcr.io -u $GITHUB_USERNAME -p $GITHUB_CONTAINER_TOKEN
+  script:
+    - docker pull 
+      ${NEXUS_REPO_HOST}/${CI_PROJECT_NAME}:${CI_COMMIT_SHORT_SHA}
+    - docker tag 
+      ${NEXUS_REPO_HOST}/${CI_PROJECT_NAME}:${CI_COMMIT_SHORT_SHA}
+      ghcr.io/theklausklausen/cert-manager-webhook-ipv64:${CI_PIPELINE_IID}
+    - docker tag 
+      ${NEXUS_REPO_HOST}/${CI_PROJECT_NAME}:${CI_COMMIT_SHORT_SHA}
+      ghcr.io/theklausklausen/cert-manager-webhook-ipv64:latest
+    - docker push 
+      ghcr.io/theklausklausen/cert-manager-webhook-ipv64:${CI_PIPELINE_IID}
+  after_script:
+    - docker logout ${NEXUS_REPO_HOST}
+    - docker logout ghcr.io
+  <<: *only_on_code_change
