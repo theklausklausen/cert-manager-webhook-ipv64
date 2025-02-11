@@ -84,7 +84,7 @@ prettier lint:
 helm lint:
   extends: .helm_lint
   variables:
-    HELM_CHART_DIR: charts
+    HELM_CHART_DIR: charts/cert-manager-webhook-ipv64
   <<: *only_on_helm_change
 go-lint:
   extends: .go_lint
