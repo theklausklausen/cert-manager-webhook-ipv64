@@ -22,3 +22,4 @@ testdata/my-custom-solver/secret.yml
 workspace.env
 
 **/*.tgz
+tmp.yml
