@@ -153,11 +153,7 @@ func (c *Client) DeleteDNSRecord(subdomain string, praefix string, content strin
 		return err
 	}
 
-	if resp.StatusCode != http.StatusOK {
-		if resp.StatusCode == http.StatusAccepted && response.delRecord == "del_record" {
-			klog.Info("Deleted record ", praefix, ".", subdomain)
-			return nil
-		}
+	if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusAccepted {
 		klog.Error("Could not delete record: ", response.info, response)
 		klog.V(4).Infoln("Response: ", response)
 		return fmt.Errorf("unexpected status code: %d", resp.StatusCode)
