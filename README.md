@@ -66,7 +66,7 @@ spec:
         maxDuration: 3m0s
 ```
 
-AI translates it to following command, but not yet testet:
+or:
 
 ```bash
 helm repo add cert-manager-webhook-ipv64 https://theklausklausen.github.io/cert-manager-webhook-ipv64/
