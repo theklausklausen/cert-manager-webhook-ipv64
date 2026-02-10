@@ -98,7 +98,7 @@ render helm chart:
   <<: *only_on_helm_change
 run_test_suite:
   stage: test
-  image: golang:1.23
+  image: golang:1.26
   script:
     - TEST_ZONE_NAME=example.com make test
   <<: *only_on_code_change
