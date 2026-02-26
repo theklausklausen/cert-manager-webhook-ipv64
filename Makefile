@@ -15,17 +15,16 @@ HELM_FILES := $(shell find charts/cert-manager-webhook-ipv64)
 help: ## Display this help.
 	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m\n"} /^[a-zA-Z_0-9-]+:.*?##/ { printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
 
-test: _test/kubebuilder-$(KUBEBUILDER_VERSION)-$(OS)-$(ARCH)/etcd _test/kubebuilder-$(KUBEBUILDER_VERSION)-$(OS)-$(ARCH)/kube-apiserver _test/kubebuilder-$(KUBEBUILDER_VERSION)-$(OS)-$(ARCH)/kubectl
-	TEST_ASSET_ETCD=_test/kubebuilder-$(KUBEBUILDER_VERSION)-$(OS)-$(ARCH)/etcd \
-	TEST_ASSET_KUBE_APISERVER=_test/kubebuilder-$(KUBEBUILDER_VERSION)-$(OS)-$(ARCH)/kube-apiserver \
-	TEST_ASSET_KUBECTL=_test/kubebuilder-$(KUBEBUILDER_VERSION)-$(OS)-$(ARCH)/kubectl \
+test: _test/envtest
+	TEST_ASSET_ETCD=$$(_test/envtest use $(KUBEBUILDER_VERSION) -p path)/etcd \
+	TEST_ASSET_KUBE_APISERVER=$$(_test/envtest use $(KUBEBUILDER_VERSION) -p path)/kube-apiserver \
+	TEST_ASSET_KUBECTL=$$(_test/envtest use $(KUBEBUILDER_VERSION) -p path)/kubectl \
 	$(GO) test -v .
 
-_test/kubebuilder-$(KUBEBUILDER_VERSION)-$(OS)-$(ARCH).tar.gz: | _test
-	curl -fsSL https://go.kubebuilder.io/test-tools/$(KUBEBUILDER_VERSION)/$(OS)/$(ARCH) -o $@
-
-_test/kubebuilder-$(KUBEBUILDER_VERSION)-$(OS)-$(ARCH)/etcd _test/kubebuilder-$(KUBEBUILDER_VERSION)-$(OS)-$(ARCH)/kube-apiserver _test/kubebuilder-$(KUBEBUILDER_VERSION)-$(OS)-$(ARCH)/kubectl: _test/kubebuilder-$(KUBEBUILDER_VERSION)-$(OS)-$(ARCH).tar.gz | _test/kubebuilder-$(KUBEBUILDER_VERSION)-$(OS)-$(ARCH)
-	tar xfO $< kubebuilder/bin/$(notdir $@) > $@ && chmod +x $@
+_test/envtest: | _test
+	GOBIN=$(PWD)/_test $(GO) install sigs.k8s.io/controller-runtime/tools/setup-envtest@latest
+	mv _test/setup-envtest _test/envtest
+	chmod +x _test/envtest
 
 .PHONY: clean
 clean:
