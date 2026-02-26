@@ -9,7 +9,7 @@ require (
 	k8s.io/apiextensions-apiserver v0.31.3
 	k8s.io/apimachinery v0.31.3
 	k8s.io/client-go v0.31.3
-	k8s.io/klog v0.2.0
+	k8s.io/klog v0.4.0
 )
 
 require (
