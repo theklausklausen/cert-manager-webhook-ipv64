@@ -8,10 +8,12 @@
       - '**/Dockefile'
 
 .only_on_helm_change: &only_on_helm_change
-  only:
-    changes:
-      - '**/charts/**/*'
-
+  # only:
+  #   changes:
+  #     - '**/charts/**/*'
+  rules:
+  - when: always
+  
 .only_on_markdown_change: &only_on_markdown_change
   only:
     changes:
