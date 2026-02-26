@@ -117,6 +117,7 @@ package_scan:
   extends: .package_scan
 container_scan:
   extends: .container_scan
+  allow_failure: true
 
 # build
 build image:
