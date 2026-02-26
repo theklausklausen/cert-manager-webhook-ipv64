@@ -15,7 +15,7 @@ COPY . .
 
 RUN CGO_ENABLED=0 go build -o webhook -ldflags '-w -extldflags "-static"' .
 
-FROM alpine:3.18 AS prod
+FROM alpine:3.23 AS prod
 
 ENV VERSION=${CI_PIPELINE_IID}
 
