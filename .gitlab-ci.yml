@@ -87,7 +87,8 @@ prettier lint:
 helm lint:
   extends: .helm_lint
   variables:
-    HELM_CHART_DIR: charts/cert-manager-webhook-ipv64
+    HELM_CHART_DIR: charts/
+    PACKAGE_NAME: cert-manager-webhook-ipv64
   <<: *only_on_helm_change
 go-lint:
   extends: .go_lint
@@ -97,7 +98,8 @@ go-lint:
 render helm chart:
   extends: .render_helm_chart
   variables:
-    HELM_CHART_DIR: charts
+    HELM_CHART_DIR: charts/
+    PACKAGE_NAME: cert-manager-webhook-ipv64
   <<: *only_on_helm_change
 run_test_suite:
   stage: test
@@ -139,7 +141,7 @@ package image:
 package helm:
   extends: .package_helm_chart
   variables:
-    HELM_CHART_DIR: charts
+    HELM_CHART_DIR: charts/
     PACKAGE_NAME: cert-manager-webhook-ipv64
   <<: *only_on_helm_change
 
