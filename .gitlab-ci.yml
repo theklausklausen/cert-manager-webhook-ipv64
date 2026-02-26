@@ -54,13 +54,13 @@ variables:
   GO_IMAGE: golang:1.23
 
 stages:
-  - security
   - lint
   - test
   - build
   - package
   - deploy
   - publish
+  - security
 
 # go-lint:
 #   stage: test
