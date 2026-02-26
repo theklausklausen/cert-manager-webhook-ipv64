@@ -22,6 +22,7 @@ type Record struct {
 	domain   string
 }
 
+// addRecordResponse is a struct representing the response of the ipv64 API when adding a record
 type addRecordResponse struct {
 	info      string `json:"info"`
 	status    string `json:"status"`
