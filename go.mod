@@ -6,9 +6,9 @@ require (
 	github.com/cert-manager/cert-manager v1.16.2
 	github.com/cert-manager/webhook-example v0.0.0-20240809063448-0dcb65374050
 	github.com/getsentry/sentry-go v0.30.0
-	k8s.io/apiextensions-apiserver v0.31.3
-	k8s.io/apimachinery v0.31.3
-	k8s.io/client-go v0.31.3
+	k8s.io/apiextensions-apiserver v0.35.2
+	k8s.io/apimachinery v0.35.2
+	k8s.io/client-go v0.35.2
 	k8s.io/klog v0.2.0
 )
 
