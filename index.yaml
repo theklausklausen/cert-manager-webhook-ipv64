@@ -1,0 +1,13 @@
+apiVersion: v1
+entries:
+  cert-manager-webhook-ipv64:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: "2026-02-28T08:46:00.676688926Z"
+    description: A Helm chart for Kubernetes
+    digest: 2d93229e0bf8ecfd77a8cd5cc29720af0ba8b8456ec350220856b1cfc15ace68
+    name: cert-manager-webhook-ipv64
+    urls:
+    - https://github.com/theklausklausen/cert-manager-webhook-ipv64/releases/download/cert-manager-webhook-ipv64-0.1.0/cert-manager-webhook-ipv64-0.1.0.tgz
+    version: 0.1.0
+generated: "2026-02-28T08:46:00.676694186Z"
