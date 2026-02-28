@@ -57,11 +57,13 @@ func NewClient(token string) *Client {
 }
 
 // AddDNSRecord adds a DNS record to the ipv64 API
-func (c *Client) AddDNSRecord(subdomain string, praefix string, content string, recordtype string) error {
+func (c *Client) AddDNSRecord(subdomain string, fqdn string, content string, recordtype string) error {
 	if recordtype != "TXT" && recordtype != "A" && recordtype != "CNAME" && recordtype != "MX" && recordtype != "NS" && recordtype != "PTR" && recordtype != "SRV" && recordtype != "SOA" && recordtype != "AAAA" {
 		klog.Error("unsupported record type: ", recordtype)
 		return fmt.Errorf("unsupported record type: %s", recordtype)
 	}
+
+	praefix := fqdn[:len(fqdn)-len(subdomain)-1]
 
 	params := url.Values{}
 	params.Set("add_record", subdomain)
@@ -114,10 +116,12 @@ func (c *Client) AddDNSRecord(subdomain string, praefix string, content string, 
 }
 
 // DeleteDNSRecord deletes a DNS record from the ipv64 API
-func (c *Client) DeleteDNSRecord(subdomain string, praefix string, content string, recordtype string) error {
+func (c *Client) DeleteDNSRecord(subdomain string, fqdn string, content string, recordtype string) error {
 	if recordtype != "TXT" && recordtype != "A" && recordtype != "CNAME" && recordtype != "MX" && recordtype != "NS" && recordtype != "PTR" && recordtype != "SRV" && recordtype != "SOA" && recordtype != "AAAA" {
 		return fmt.Errorf("unsupported record type: %s", recordtype)
 	}
+
+	praefix := fqdn[:len(fqdn)-len(subdomain)-1]
 
 	params := url.Values{}
 	params.Set("del_record", subdomain)
