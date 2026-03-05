@@ -68,6 +68,8 @@ func (c *Client) AddDNSRecord(subdomain string, fqdn string, content string, rec
 		praefix = praefix[:len(praefix)-1]
 	}
 
+	klog.Info("Adding ", recordtype, " record ", praefix, subdomain, " with content ", content)
+
 	params := url.Values{}
 	params.Set("add_record", subdomain)
 	params.Set("praefix", praefix)
@@ -128,6 +130,8 @@ func (c *Client) DeleteDNSRecord(subdomain string, fqdn string, content string, 
 	if praefix[len(praefix)-1] == '.' {
 		praefix = praefix[:len(praefix)-1]
 	}
+
+	klog.Info("Deleting ", recordtype, " record ", praefix, subdomain)
 
 	params := url.Values{}
 	params.Set("del_record", subdomain)
