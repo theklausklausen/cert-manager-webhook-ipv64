@@ -125,6 +125,9 @@ func (c *Client) DeleteDNSRecord(subdomain string, fqdn string, content string, 
 	}
 
 	praefix := fqdn[:len(fqdn)-len(subdomain)-1]
+	if praefix[len(praefix)-1] == '.' {
+		praefix = praefix[:len(praefix)-1]
+	}
 
 	params := url.Values{}
 	params.Set("del_record", subdomain)
