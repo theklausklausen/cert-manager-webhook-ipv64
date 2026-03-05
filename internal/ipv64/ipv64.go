@@ -64,6 +64,9 @@ func (c *Client) AddDNSRecord(subdomain string, fqdn string, content string, rec
 	}
 
 	praefix := fqdn[:len(fqdn)-len(subdomain)-1]
+	if praefix[len(praefix)-1] == '.' {
+		praefix = praefix[:len(praefix)-1]
+	}
 
 	params := url.Values{}
 	params.Set("add_record", subdomain)
