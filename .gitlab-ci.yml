@@ -6,6 +6,7 @@
       - '**/*.mod'
       - '**/*.sum'
       - '**/Dockefile'
+      - '.gitlab-ci.yml'
 
 .only_on_helm_change: &only_on_helm_change
   only:
