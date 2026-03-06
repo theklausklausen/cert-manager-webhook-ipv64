@@ -7,7 +7,7 @@
       - '**/*.sum'
       - '**/Dockefile'
       - '.gitlab-ci.yml'
-      # - '.gitlab-ci.yaml'
+      - '.gitlab-ci.yaml'
 
 .only_on_helm_change: &only_on_helm_change
   only:
