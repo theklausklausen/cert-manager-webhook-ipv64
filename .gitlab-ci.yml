@@ -64,12 +64,12 @@ stages:
   - publish
   - security
 
-# go-lint:
-#   stage: test
-#   image: golangci/golangci-lint:v1.62.2
-#   script:
-#     - golangci-lint run -v
-#   allow_failure: true
+go-lint:
+  stage: test
+  image: golangci/golangci-lint:v1.62.2
+  script:
+    - golangci-lint run -v
+  allow_failure: true
 
 # go-test:
 #   stage: test
