@@ -92,9 +92,6 @@ helm lint:
     HELM_CHART_DIR: charts/
     PACKAGE_NAME: cert-manager-webhook-ipv64
   <<: *only_on_helm_change
-go-lint:
-  extends: .go_lint
-  <<: *only_on_code_change
 
 # test
 render helm chart:
