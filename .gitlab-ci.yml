@@ -80,10 +80,8 @@ go-lint:
 # lint
 markdown lint:
   extends: .markdown_lint
-  <<: *only_on_markdown_change
 yaml lint:
   extends: .yaml_lint
-  <<: *only_on_yaml_change
 prettier lint:
   extends: .prettier
 helm lint:
@@ -91,7 +89,6 @@ helm lint:
   variables:
     HELM_CHART_DIR: charts/
     PACKAGE_NAME: cert-manager-webhook-ipv64
-  <<: *only_on_helm_change
 
 # test
 render helm chart:
@@ -99,13 +96,11 @@ render helm chart:
   variables:
     HELM_CHART_DIR: charts/
     PACKAGE_NAME: cert-manager-webhook-ipv64
-  <<: *only_on_helm_change
 run_test_suite:
   stage: test
   image: golang:1.26
   script:
     - TEST_ZONE_NAME=example.com make test
-  <<: *only_on_code_change
 
 # security
 secret_detection:
@@ -127,7 +122,6 @@ build image:
     IMAGE_NAME: ${NEXUS_REPO_HOST}/${CI_PROJECT_NAME}
     IMAGE_TAG: ${CI_COMMIT_SHORT_SHA}
     BUILD_TARGET: prod
-  <<: *only_on_code_change
 
 # package
 package image:
@@ -136,13 +130,11 @@ package image:
     IMAGE_NAME: ${NEXUS_REPO_HOST}/${CI_PROJECT_NAME}
   tags:
     - amd64
-  <<: *only_on_code_change
 package helm:
   extends: .package_helm_chart
   variables:
     HELM_CHART_DIR: charts/
     PACKAGE_NAME: cert-manager-webhook-ipv64
-  <<: *only_on_helm_change
 
 # deploy
 deploy helm:
@@ -150,7 +142,6 @@ deploy helm:
   variables:
     HELM_CHART_DIR: charts
     PACKAGE_NAME: cert-manager-webhook-ipv64
-  <<: *only_on_helm_change
 
 # # publish
 # publish image to github:
