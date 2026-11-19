@@ -5,7 +5,7 @@ go 1.26.0
 require (
 	github.com/cert-manager/cert-manager v1.21.3
 	github.com/cert-manager/webhook-example v0.0.0-20261114122313-60e3ea9585e8
-	github.com/getsentry/sentry-go v0.30.0
+	github.com/getsentry/sentry-go v0.50.0
 	k8s.io/apiextensions-apiserver v0.37.2
 	k8s.io/apimachinery v0.37.2
 	k8s.io/client-go v0.37.2
