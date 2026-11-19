@@ -9,8 +9,13 @@ It works on my machine.
 Please don't expect regular updates or improvements,
 but feel free to create MRs/PRs or fork entirely.
 
-The project is build around a privately hosted Gitlab instance,
-hence there is no Github CI besides container image creation.
+The project is built around a privately hosted GitLab instance. The GitHub
+mirror also publishes a container image and a Helm chart on every main push.
+Both use `1.<GitHub workflow run number>.0` as their version; rerunning a
+workflow uses the same version. The published chart defaults to that image
+version. The image is published at
+`ghcr.io/theklausklausen/cert-manager-webhook-ipv64`, with `latest` updated
+only if the build's commit is the tip of `main` when image tags are selected.
 
 ## Limitations
 
