@@ -66,7 +66,7 @@ stages:
 
 go-lint:
   stage: test
-  image: golangci/golangci-lint:v1.62.2
+  image: golangci/golangci-lint:v1.64.8
   script:
     - golangci-lint run -v
   allow_failure: true
